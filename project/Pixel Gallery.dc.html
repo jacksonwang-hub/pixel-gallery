@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;background:#ffffff;}
+  img{image-rendering:pixelated;}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+  @keyframes waddle{0%{transform:translateY(0) rotate(-2.2deg)}25%{transform:translateY(-4px) rotate(0deg)}50%{transform:translateY(0) rotate(2.2deg)}75%{transform:translateY(-4px) rotate(0deg)}100%{transform:translateY(0) rotate(-2.2deg)}}
+  @keyframes hintPulse{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  @keyframes stampPop{0%{transform:scale(1.8);opacity:0}60%{transform:scale(0.94);opacity:1}100%{transform:scale(1);opacity:1}}
+  @keyframes truckBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+  @keyframes fadeUp{0%{opacity:0;transform:translateY(14px)}100%{opacity:1;transform:translateY(0)}}
+</style>
+</helmet>
+
+<div style="position:relative; width:100%; height:100vh; overflow:hidden; font-family:Helvetica,Arial,sans-serif; color:#1a1a1a;">
+
+  <!-- ============ TOGGLE BAR (white cube) ============ -->
+  <div style="position:absolute; top:0; left:0; right:0; height:64px; z-index:60; display:flex; align-items:center; justify-content:space-between; padding:0 32px; background:#ffffff; border-bottom:1px solid #e4e4e4;">
+    <div style="font-size:13px; font-weight:700; letter-spacing:5px; color:#111111;">PIXEL&nbsp;PIX</div>
+    <div style="display:flex; gap:2px; border:1px solid #e4e4e4;">
+      <button onClick="{{ setCurate }}" style="font-family:Helvetica,Arial,sans-serif; font-size:11px; font-weight:600; letter-spacing:2px; padding:11px 22px; border:none; cursor:pointer; transition:all .15s; background:{{ curateBg }}; color:{{ curateFg }};">CURATE</button>
+      <button onClick="{{ setGallery }}" style="font-family:Helvetica,Arial,sans-serif; font-size:11px; font-weight:600; letter-spacing:2px; padding:11px 22px; border:none; cursor:pointer; transition:all .15s; background:{{ galleryBg }}; color:{{ galleryFg }};">GALLERY</button>
+    </div>
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- ===================  CURATE SECTION  ================== -->
+  <!-- ====================================================== -->
+  <sc-if value="{{ isCurate }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute; inset:0; overflow:auto; background:{{ wallBg }};">
+      <div style="position:fixed; bottom:0; left:0; right:0; height:72px; background:{{ floorBg }}; box-shadow:inset 0 1px 0 {{ baseBg }};"></div>
+
+      <div style="position:relative; max-width:840px; margin:0 auto; padding:128px 24px 120px; text-align:center; min-height:100%;">
+
+        <!-- ----- PHASE: SELECT ----- -->
+        <sc-if value="{{ phaseSelect }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="font-size:13px; letter-spacing:4px; color:#9a9a9a; text-transform:uppercase;">Exhibition intake</div>
+            <div style="font-size:44px; font-weight:700; letter-spacing:-1px; color:#111; margin-top:10px;">Curate</div>
+            <div style="font-size:17px; margin-top:12px; color:#6e6e6e; line-height:1.5;">Add up to ten photographs. We&rsquo;ll crate them and ship them to your gallery wall.</div>
+
+            <div style="margin-top:36px; background:#ffffff; padding:28px; border:1px solid #e6e6e6; box-shadow:0 1px 3px rgba(0,0,0,0.05); text-align:left;">
+
+              <label style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; cursor:pointer; padding:40px; background:#fafafa; border:1px dashed #cfcfcf;">
+                <input type="file" accept="image/*" multiple onChange="{{ onFiles }}" style="display:none;">
+                <div style="width:40px;height:40px;position:relative;">
+                  <div style="position:absolute; left:18px; top:4px; width:4px; height:32px; background:#111;"></div>
+                  <div style="position:absolute; left:4px; top:18px; width:32px; height:4px; background:#111;"></div>
+                </div>
+                <div style="font-size:13px; font-weight:600; letter-spacing:2px; color:#111; text-transform:uppercase;">Drop or click to add</div>
+                <div style="font-size:14px; color:#9a9a9a; letter-spacing:0.5px;">JPG &middot; PNG &middot; up to 10 photos</div>
+              </label>
+
+              <sc-if value="{{ hasImages }}" hint-placeholder-val="{{ false }}">
+                <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:18px; margin-top:24px;">
+                  <sc-for list="{{ tray }}" as="img" hint-placeholder-count="3">
+                    <div style="position:relative;">
+                      <div style="background:#fff; padding:6px; box-shadow:0 0 0 1.5px #111;">
+                        <div style="aspect-ratio:1/1; overflow:hidden; background:#f0f0f0;">{{ img.el }}</div>
+                      </div>
+                      <button onClick="{{ img.remove }}" style="position:absolute; top:-8px; right:-8px; width:22px; height:22px; border:none; cursor:pointer; border-radius:50%; background:#111; color:#fff; font-family:Helvetica,Arial,sans-serif; font-size:13px; line-height:1; display:flex; align-items:center; justify-content:center;">&times;</button>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-top:26px; padding-top:22px; border-top:1px solid #ededed;">
+                <div style="font-size:13px; letter-spacing:2px; color:#9a9a9a; text-transform:uppercase;">{{ countLabel }}</div>
+                <sc-if value="{{ canShip }}" hint-placeholder-val="{{ true }}">
+                  <button onClick="{{ ship }}" style="display:flex; align-items:center; gap:12px; font-family:Helvetica,Arial,sans-serif; font-size:12px; font-weight:600; letter-spacing:2px; padding:15px 26px; border:none; cursor:pointer; background:#111; color:#fff; text-transform:uppercase;">Ship it
+                    <span style="width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:9px solid #fff;"></span>
+                  </button>
+                </sc-if>
+                <sc-if value="{{ noImages }}" hint-placeholder-val="{{ true }}">
+                  <div style="font-size:12px; font-weight:600; letter-spacing:2px; padding:15px 26px; background:#f0f0f0; color:#bcbcbc; text-transform:uppercase;">Ship it</div>
+                </sc-if>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- ----- PHASE: SHIPPING ----- -->
+        <sc-if value="{{ phaseShipping }}" hint-placeholder-val="{{ false }}">
+          <div style="padding-top:14px;">
+            <div style="font-size:13px; letter-spacing:4px; color:#9a9a9a; text-transform:uppercase;">In transit</div>
+            <div style="font-size:34px; font-weight:700; letter-spacing:-0.5px; color:#111; margin-top:10px;">Shipping to the gallery</div>
+            <div style="font-size:16px; margin-top:10px; color:#6e6e6e;">Crating your works&hellip;</div>
+
+            <!-- staging: photos drop into the box pile, then the pile carts off -->
+            <div style="position:relative; margin-top:32px; height:300px;">
+              <div style="position:absolute; top:0; left:0; right:0; display:flex; flex-wrap:wrap; justify-content:center; gap:16px;">
+                <sc-for list="{{ crateItems }}" as="crate" hint-placeholder-count="4">
+                  <div style="width:72px; transition:transform .55s cubic-bezier(.5,-0.3,.6,1), opacity .45s ease; transform:{{ crate.tf }}; opacity:{{ crate.op }};">
+                    <div style="background:#fff; padding:5px; box-shadow:0 0 0 1.5px #111;">
+                      <div style="height:60px; overflow:hidden; background:#f0f0f0;">{{ crate.el }}</div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="position:absolute; bottom:0; left:50%; transform:translateX(-50%);">
+                <div style="transition:transform 1.4s cubic-bezier(.5,0,.7,1); transform:{{ truckTf }}; animation:truckBob .45s steps(2) infinite;">
+                  <img src="crate-boxes.png" style="display:block; width:360px; height:auto; image-rendering:pixelated;">
+                </div>
+              </div>
+            </div>
+
+            <div style="max-width:420px; margin:6px auto 0; height:6px; background:#ececec;">
+              <div style="height:6px; background:#111; transition:width .4s ease; width:{{ shipPct }};"></div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- ----- PHASE: DELIVERED ----- -->
+        <sc-if value="{{ phaseDelivered }}" hint-placeholder-val="{{ true }}">
+          <div style="padding-top:48px; animation:fadeUp .4s ease both;">
+            <div style="display:inline-block; animation:stampPop .5s ease both; background:#111; color:#fff; font-size:14px; font-weight:700; letter-spacing:3px; padding:16px 28px; text-transform:uppercase;">Delivered</div>
+            <div style="font-size:18px; margin-top:32px; color:#6e6e6e; line-height:1.5;">Your photographs are framed and hung. Take a stroll through the gallery.</div>
+            <button onClick="{{ goGallery }}" style="display:inline-flex; align-items:center; gap:12px; margin-top:28px; font-family:Helvetica,Arial,sans-serif; font-size:12px; font-weight:600; letter-spacing:2px; padding:16px 28px; border:none; cursor:pointer; background:#111; color:#fff; text-transform:uppercase;">Enter the gallery
+              <span style="width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:10px solid #fff;"></span>
+            </button>
+          </div>
+        </sc-if>
+
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ====================================================== -->
+  <!-- ===================  GALLERY SECTION  ================= -->
+  <!-- ====================================================== -->
+  <sc-if value="{{ isGallery }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute; inset:0; overflow:hidden; background:{{ wallBg }};">
+
+      <!-- baseboard -->
+      <div style="position:absolute; bottom:304px; left:0; right:0; height:1px; background:#d8d8d8;"></div>
+      <!-- concrete floor -->
+      <div style="position:absolute; bottom:0; left:0; right:0; height:304px; background:{{ floorBg }}; box-shadow:inset 0 1px 0 {{ baseBg }};"></div>
+
+      <!-- TRACK -->
+      <div style="position:absolute; top:0; bottom:0; left:0; display:flex; align-items:center; transition:transform .5s cubic-bezier(.22,.61,.36,1); transform:{{ trackTransform }};">
+
+        <!-- title item -->
+        <div style="flex:none; width:420px; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; padding-bottom:60px;">
+          <div style="font-size:13px; letter-spacing:5px; color:#9a9a9a; text-transform:uppercase;">Exhibition</div>
+          <div style="font-size:72px; font-weight:700; letter-spacing:-3px; color:#111; line-height:0.95; margin-top:14px; white-space:nowrap;">Pixel Pix</div>
+          <div style="width:44px; height:2px; background:#111; margin-top:24px;"></div>
+          <div style="font-size:15px; color:#9a9a9a; margin-top:18px; letter-spacing:0.5px;">use &larr; &rarr; to walk the room</div>
+        </div>
+
+        <!-- frames -->
+        <sc-for list="{{ slides }}" as="slide" hint-placeholder-count="3">
+          <div style="flex:none; width:420px; height:100%; display:flex; align-items:center; justify-content:center; padding-bottom:36px;">
+            <div style="position:relative; transition:transform .45s ease, opacity .45s ease; transform:{{ slide.tf }}; opacity:{{ slide.dim }};">
+
+              <!-- spotlight -->
+              <div style="position:absolute; left:50%; top:-150px; transform:translateX(-50%); width:160px; height:150px; background:linear-gradient(to bottom,rgba(0,0,0,0.05),rgba(0,0,0,0)); clip-path:polygon(38% 0,62% 0,100% 100%,0 100%); pointer-events:none;"></div>
+
+              <!-- thin modern frame (size follows image aspect ratio) -->
+              <div data-frame="1" style="position:relative; width:{{ slide.fw }}; height:{{ slide.fh }}; background:#fff; padding:3px; box-shadow:0 0 0 1.5px #111, 0 8px 24px rgba(0,0,0,0.08);">
+                <div style="width:100%; height:100%; background:#fff; padding:22px;">
+                  <div style="width:100%; height:100%; overflow:hidden; box-shadow:0 0 0 1px #ddd; background:#f2f2f2; display:flex; align-items:center; justify-content:center;">
+                    <sc-if value="{{ slide.empty }}" hint-placeholder-val="{{ true }}">
+                      <div style="text-align:center; color:#bcbcbc;">
+                        <div style="font-size:12px; font-weight:600; letter-spacing:2px; text-transform:uppercase;">Empty</div>
+                        <div style="font-size:13px; margin-top:4px; color:#cfcfcf;">curate a photo</div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ slide.filled }}" hint-placeholder-val="{{ false }}">{{ slide.el }}</sc-if>
+                  </div>
+                </div>
+              </div>
+
+              <!-- plaque -->
+              <div style="display:flex; flex-direction:column; align-items:center; margin-top:22px;">
+                <div style="font-size:11px; font-weight:700; letter-spacing:2px; color:#111; text-transform:uppercase;">Photo {{ slide.num }}</div>
+                <div style="font-size:12px; color:#9a9a9a; margin-top:3px; letter-spacing:0.5px;">archival pixel print</div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- WALKER -->
+      <div style="position:absolute; bottom:302px; left:50%; z-index:30; transform:{{ walkerTransform }}; display:{{ walkerDisplay }};">
+        <div style="position:relative; transform-origin:bottom center; animation:waddle .52s steps(4,end) infinite;">
+          <img src="character.png" style="display:block; width:auto; image-rendering:pixelated; height:{{ walkerHpx }};">
+          <div style="position:absolute; bottom:-6px; left:50%; transform:translateX(-50%); height:8px; border-radius:50%; background:rgba(0,0,0,0.14); width:{{ walkerShadowW }};"></div>
+        </div>
+      </div>
+
+      <!-- HUD -->
+      <sc-if value="{{ showHud }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute; bottom:28px; left:50%; transform:translateX(-50%); z-index:40; display:flex; gap:28px; align-items:center; background:#ffffff; padding:14px 24px; border:1px solid #e4e4e4; box-shadow:0 4px 16px rgba(0,0,0,0.06);">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="display:flex; gap:4px;">
+              <div style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid #d6d6d6;border-radius:4px;"><div style="width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-right:9px solid #111;"></div></div>
+              <div style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid #d6d6d6;border-radius:4px;"><div style="width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:9px solid #111;"></div></div>
+            </div>
+            <div style="font-size:10px; font-weight:600; letter-spacing:2px; color:#6e6e6e; text-transform:uppercase;">Walk</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid #d6d6d6;border-radius:4px;"><div style="width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:9px solid #111;"></div></div>
+            <div style="font-size:10px; font-weight:600; letter-spacing:2px; color:#6e6e6e; text-transform:uppercase;">Zoom</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid #d6d6d6;border-radius:4px;"><div style="width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:9px solid #111;"></div></div>
+            <div style="font-size:10px; font-weight:600; letter-spacing:2px; color:#6e6e6e; text-transform:uppercase;">Back</div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ZOOM OVERLAY -->
+      <sc-if value="{{ showZoom }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ zoomOut }}" style="position:absolute; inset:0; z-index:80; background:rgba(255,255,255,0.96); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:26px; cursor:zoom-out; animation:fadeUp .25s ease both;">
+          <div style="position:relative; width:{{ zoomWpx }}; height:{{ zoomHpx }}; background:#fff; padding:8px; box-shadow:0 0 0 1.5px #111, 0 24px 60px rgba(0,0,0,0.18);">
+            <div style="width:100%; height:100%; background:#fff; padding:26px;">
+              <div style="width:100%; height:100%; overflow:hidden; box-shadow:0 0 0 1px #ddd; background:#f2f2f2;">{{ zoomEl }}</div>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
+            <div style="font-size:12px; font-weight:700; letter-spacing:3px; color:#111; text-transform:uppercase;">Photo {{ zoomNum }}</div>
+            <div style="display:flex; align-items:center; gap:10px; color:#9a9a9a; font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase; animation:hintPulse 1.4s ease-in-out infinite;">
+              <div style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:1px solid #d6d6d6;border-radius:4px;"><div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:8px solid #111;"></div></div>
+              Back to wall
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1280, &quot;height&quot;: 800 },
+  &quot;wallTone&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;White&quot;, &quot;Bone&quot;, &quot;Cool&quot;], &quot;default&quot;: &quot;White&quot;, &quot;tsType&quot;: &quot;'White'|'Bone'|'Cool'&quot; },
+  &quot;showInstructions&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot; }
+}">
+class Component extends DCLogic {
+  state = {
+    view: 'curate',
+    images: [],
+    phase: 'select',
+    shippedCount: 0,
+    truckGone: false,
+    galleryIndex: 0,
+    zoomed: false,
+    dir: 1,
+    walkerH: 150,
+    winW: (typeof window !== 'undefined' ? window.innerWidth : 1280),
+    winH: (typeof window !== 'undefined' ? window.innerHeight : 800),
+  };
+
+  componentDidMount() {
+    this._onKey = (e) => this.handleKey(e);
+    window.addEventListener('keydown', this._onKey);
+    this._onResize = () => { this.setState({ winW: window.innerWidth, winH: window.innerHeight }); this.measure(); };
+    window.addEventListener('resize', this._onResize);
+    requestAnimationFrame(() => this.measure());
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState && prevState.view !== 'gallery' && this.state.view === 'gallery') {
+      requestAnimationFrame(() => this.measure());
+    }
+  }
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this._onKey);
+    window.removeEventListener('resize', this._onResize);
+    if (this._timers) this._timers.forEach(clearTimeout);
+  }
+
+  measure() {
+    if (this.state.view !== 'gallery') return;
+    const frames = [...document.querySelectorAll('[data-frame]')];
+    if (!frames.length) return;
+    let maxB = 0;
+    frames.forEach((f) => { const b = f.getBoundingClientRect().bottom; if (b > maxB) maxB = b; });
+    const H = window.innerHeight;
+    const FLOOR = 304;
+    const gap = (H - maxB) - FLOOR;
+    if (gap < 40) return;
+    const h = Math.round(gap / 2);
+    if (Math.abs(h - this.state.walkerH) > 1) this.setState({ walkerH: h });
+  }
+
+  imgList() { return this.state.images.length ? this.state.images : [null, null, null]; }
+  maxIndex() { return this.imgList().length; }
+
+  handleKey(e) {
+    if (this.state.view !== 'gallery') return;
+    const k = e.key;
+    if (k === 'ArrowRight') { e.preventDefault(); this.move(1); }
+    else if (k === 'ArrowLeft') { e.preventDefault(); this.move(-1); }
+    else if (k === 'ArrowUp') { e.preventDefault(); if (this.state.galleryIndex >= 1 && this.state.images.length) this.setState({ zoomed: true }); }
+    else if (k === 'ArrowDown') { e.preventDefault(); this.setState({ zoomed: false }); }
+  }
+
+  move(d) {
+    if (this.state.zoomed) return;
+    const max = this.maxIndex();
+    let ni = this.state.galleryIndex + d;
+    if (ni < 0) ni = 0;
+    if (ni > max) ni = max;
+    if (ni === this.state.galleryIndex) { this.setState({ dir: d }); return; }
+    this.setState({ galleryIndex: ni, dir: d });
+  }
+
+  pixelate(src, size) {
+    return new Promise((res) => {
+      const img = new Image();
+      img.onload = () => {
+        const ar = img.width / img.height;
+        let w, h;
+        if (ar >= 1) { w = size; h = Math.max(1, Math.round(size / ar)); }
+        else { h = size; w = Math.max(1, Math.round(size * ar)); }
+        const c = document.createElement('canvas');
+        c.width = w; c.height = h;
+        const ctx = c.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(img, 0, 0, w, h);
+        res({ px: c.toDataURL(), ar: img.width / img.height });
+      };
+      img.onerror = () => res({ px: src, ar: 1 });
+      img.src = src;
+    });
+  }
+
+  onFiles(e) {
+    const files = Array.from(e.target.files || []);
+    const room = 10 - this.state.images.length;
+    const sel = files.slice(0, room);
+    sel.forEach((f) => {
+      const r = new FileReader();
+      r.onload = async () => {
+        const { px, ar } = await this.pixelate(r.result, 64);
+        this.setState((s) => ({ images: [...s.images, { id: Date.now() + '' + Math.random(), px, ar: ar || 1 }] }));
+      };
+      r.readAsDataURL(f);
+    });
+    e.target.value = '';
+  }
+  removeImage(id) { this.setState((s) => ({ images: s.images.filter((i) => i.id !== id) })); }
+
+  ship() {
+    if (!this.state.images.length) return;
+    this.setState({ phase: 'shipping', shippedCount: 0, truckGone: false });
+    if (this._timers) this._timers.forEach(clearTimeout);
+    this._timers = [];
+    const n = this.state.images.length;
+    for (let i = 1; i <= n; i++) {
+      this._timers.push(setTimeout(() => this.setState({ shippedCount: i }), 520 * i));
+    }
+    this._timers.push(setTimeout(() => this.setState({ truckGone: true }), 520 * n + 700));
+    this._timers.push(setTimeout(() => this.setState({ phase: 'delivered' }), 520 * n + 2300));
+  }
+
+  renderVals() {
+    const s = this.state, p = this.props;
+    const imgs = s.images;
+    const has = imgs.length > 0;
+    const n = imgs.length;
+
+    const toneMap = {
+      White: { wall: '#ffffff', floor: '#efeeea', base: '#e0ded8' },
+      Bone:  { wall: '#f6f4ef', floor: '#e9e6df', base: '#dcd8cf' },
+      Cool:  { wall: '#f4f6f7', floor: '#e8ebec', base: '#d8dcdd' },
+    };
+    const tone = toneMap[p.wallTone] || toneMap.White;
+
+    const coverImg = (src) => React.createElement('img', { src, style: { width: '100%', height: '100%', objectFit: 'cover', imageRendering: 'pixelated', display: 'block' } });
+
+    // Frame sizing — well's longest side = 300px, matched to image aspect ratio,
+    // plus a 22px mat + 3px keyline on every side (50px total each axis).
+    const PAD = 50, MAXWELL = 300;
+    const frameDims = (ar) => {
+      const a = ar && ar > 0 ? ar : 1;
+      let wellW, wellH;
+      if (a >= 1) { wellW = MAXWELL; wellH = Math.round(MAXWELL / a); }
+      else { wellH = MAXWELL; wellW = Math.round(MAXWELL * a); }
+      return { fw: wellW + PAD + 'px', fh: wellH + PAD + 'px' };
+    };
+
+    const tray = imgs.map((img) => ({ id: img.id, el: coverImg(img.px), remove: () => this.removeImage(img.id) }));
+
+    const slides = this.imgList().map((img, i) => {
+      const focused = s.galleryIndex === i + 1;
+      const d = frameDims(img ? img.ar : 1);
+      return {
+        empty: !img,
+        filled: !!img,
+        el: img ? coverImg(img.px) : null,
+        num: String(i + 1).padStart(2, '0'),
+        fw: d.fw, fh: d.fh,
+        tf: focused ? 'scale(1.06)' : 'scale(0.84)',
+        dim: focused ? '1' : '0.55',
+      };
+    });
+
+    const zImg = (s.galleryIndex >= 1) ? imgs[s.galleryIndex - 1] : null;
+    const zoomAR = zImg && zImg.ar ? zImg.ar : 1;
+    // Zoom frame ~2.4x the on-wall work — fit the photo's aspect ratio into the viewport.
+    const vw = s.winW || 1280, vh = s.winH || 800;
+    const availW = vw * 0.9, availH = vh * 0.86;
+    let zW, zH;
+    if (zoomAR >= 1) { zW = Math.min(availW, availH * zoomAR); zH = zW / zoomAR; }
+    else { zH = Math.min(availH, availW / zoomAR); zW = zH * zoomAR; }
+
+    const crateItems = imgs.map((img, i) => {
+      const loaded = i < s.shippedCount;
+      const active = i === s.shippedCount && s.phase === 'shipping';
+      return {
+        el: coverImg(img.px),
+        tf: loaded ? 'translateY(210px) scale(0.26)' : (active ? 'translateY(-6px) scale(1.06)' : 'scale(1)'),
+        op: loaded ? '0' : '1',
+      };
+    });
+    const shipPct = n ? Math.round(Math.min(s.shippedCount, n) / n * 100) + '%' : '0%';
+
+    const isCurate = s.view === 'curate';
+    const isGallery = s.view === 'gallery';
+
+    return {
+      isCurate, isGallery,
+      wallBg: tone.wall, floorBg: tone.floor, baseBg: tone.base,
+      curateBg: isCurate ? '#111111' : '#ffffff',
+      curateFg: isCurate ? '#ffffff' : '#777777',
+      galleryBg: isGallery ? '#111111' : '#ffffff',
+      galleryFg: isGallery ? '#ffffff' : '#777777',
+
+      tray, hasImages: has, noImages: !has,
+      countLabel: n + ' / 10',
+      canShip: n > 0,
+      phaseSelect: s.phase === 'select', phaseShipping: s.phase === 'shipping', phaseDelivered: s.phase === 'delivered',
+      crateItems, shipPct, truckTf: s.truckGone ? 'translateX(150vw)' : 'translateX(0)',
+
+      slides,
+      trackTransform: 'translateX(calc(50vw - 210px - ' + (s.galleryIndex * 420) + 'px))',
+      walkerTransform: 'translateX(-50%) scaleX(' + s.dir + ')',
+      walkerDisplay: s.zoomed ? 'none' : 'block',
+      walkerHpx: s.walkerH + 'px',
+      walkerShadowW: Math.round(s.walkerH * 0.426 * 0.66) + 'px',
+      showHud: (p.showInstructions !== false) && !s.zoomed,
+      showZoom: s.zoomed && s.galleryIndex >= 1 && has && !!imgs[s.galleryIndex - 1],
+      zoomEl: (s.galleryIndex >= 1 && imgs[s.galleryIndex - 1]) ? coverImg(imgs[s.galleryIndex - 1].px) : null,
+      zoomWpx: Math.round(zW) + 'px',
+      zoomHpx: Math.round(zH) + 'px',
+      zoomNum: s.galleryIndex >= 1 ? String(s.galleryIndex).padStart(2, '0') : '',
+
+      onFiles: (e) => this.onFiles(e),
+      ship: () => this.ship(),
+      goGallery: () => this.setState({ view: 'gallery', galleryIndex: 0, zoomed: false }),
+      setCurate: () => this.setState({ view: 'curate', zoomed: false }),
+      setGallery: () => this.setState({ view: 'gallery', zoomed: false }),
+      zoomOut: () => this.setState({ zoomed: false }),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+/* Pixel Museum — Color tokens
+   "White Cube" modern-museum system: near-monochrome neutrals,
+   crisp black hairlines, warm/cool wall variants. Color comes
+   only from the pixel artworks themselves. */
+:root {
+  /* Ink / neutrals (light → dark) */
+  --pm-white:    #ffffff;
+  --pm-ink-50:   #fafafa;
+  --pm-ink-100:  #f2f2f2;
+  --pm-ink-150:  #ededed;
+  --pm-ink-200:  #e4e4e4;
+  --pm-ink-300:  #cfcfcf;
+  --pm-ink-400:  #9a9a9a;
+  --pm-ink-500:  #6e6e6e;
+  --pm-ink-700:  #2a2a2a;
+  --pm-ink-900:  #111111;
+
+  /* Gallery environment */
+  --pm-wall-white: #ffffff;
+  --pm-wall-bone:  #f6f4ef;
+  --pm-wall-cool:  #f4f6f7;
+  --pm-floor:      #efeeea;
+  --pm-floor-bone: #e9e6df;
+  --pm-floor-cool: #e8ebec;
+  --pm-floor-edge: #e0ded8;
+
+  /* Semantic aliases */
+  --pm-text-strong:  var(--pm-ink-900);
+  --pm-text-body:    var(--pm-ink-500);
+  --pm-text-muted:   var(--pm-ink-400);
+  --pm-text-invert:  var(--pm-white);
+
+  --pm-surface:      var(--pm-white);
+  --pm-surface-sub:  var(--pm-ink-50);
+  --pm-surface-fill: var(--pm-ink-100);
+
+  --pm-border:       var(--pm-ink-200);
+  --pm-border-soft:  var(--pm-ink-150);
+  --pm-rule:         var(--pm-ink-900);   /* the 1.5px black frame/keyline */
+
+  --pm-accent:       var(--pm-ink-900);   /* primary action = black */
+  --pm-accent-text:  var(--pm-white);
+}

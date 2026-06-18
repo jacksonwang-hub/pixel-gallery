@@ -1,0 +1,177 @@
+/* WorldWinner — Colors & Type
+   Source of truth: Style Guide 2023 (Figma)
+   Primary brand: WorldWinner (ww.com) — skill-gaming, real cash prizes
+*/
+
+/* ------------- COLORS ------------- */
+:root {
+  /* Brand blues */
+  --ww-blue: #1D7CEB;          /* primary brand blue */
+  --ww-blue-2: #2496FF;        /* bright blue */
+  --ww-blue-deep: #0D53D0;     /* radial BG inner */
+  --ww-blue-mid: #3274E9;      /* radial BG outer */
+  --ww-blue-sky: #75D7F6;      /* light radial BG inner */
+  --ww-blue-ink: #1C5AB8;      /* dark overlay blue */
+
+  /* Accents */
+  --ww-yellow: #FFF100;        /* crown yellow / decoration */
+  --ww-yellow-pure: #FFFF00;   /* highlight yellow */
+  --ww-cyan: #4BE9FE;          /* highlight cyan */
+  --ww-cyan-glow: #22D7FF;     /* icon glow cyan */
+  --ww-aqua: #3AFEF2;          /* aqua accent */
+
+  /* Currencies */
+  --ww-cash-green: #50AC07;    /* cash coin outer */
+  --ww-cash-green-2: #92E94E;  /* cash coin inner */
+  --ww-cash-green-3: #53BB03;  /* cash ring */
+  --ww-cash-green-4: #46A001;  /* cash $ shadow */
+  --ww-rewards-purple: #6F53FA;/* rewards card fill */
+
+  /* Decorative gradients */
+  --ww-magenta: #AE2870;
+  --ww-violet: #302DC5;
+  --ww-purple: #6327AF;
+
+  /* Neutrals */
+  --ww-white: #FFFFFF;
+  --ww-black: #000000;
+  --ww-ink: #111111;
+  --ww-gray-900: #1A1A1A;
+  --ww-gray-700: #4A4A4A;
+  --ww-gray-500: #808080;
+  --ww-gray-400: #979EA4;
+  --ww-gray-300: #D9D9D9;
+  --ww-gray-200: #E6E6E6;
+  --ww-gray-100: #F2F2F2;
+
+  /* Semantic fg/bg */
+  --fg-1: var(--ww-ink);
+  --fg-2: var(--ww-gray-700);
+  --fg-3: var(--ww-gray-500);
+  --fg-on-blue: var(--ww-white);
+
+  --bg-app: var(--ww-white);
+  --bg-brand: radial-gradient(circle at 70% 80%, var(--ww-blue-sky) 0%, var(--ww-blue-mid) 100%);
+  --bg-brand-deep: radial-gradient(circle at 70% 80%, var(--ww-blue-deep) 0%, var(--ww-blue-mid) 100%);
+  --bg-card-effect: linear-gradient(135deg, var(--ww-magenta) 0%, var(--ww-violet) 100%);
+  --bg-card-purple: linear-gradient(180deg, var(--ww-blue) 0%, var(--ww-purple) 100%);
+  --bg-rewards-glow: linear-gradient(180deg, #25C5F8 0%, #2496FF 100%);
+  --bg-cash-coin: linear-gradient(180deg, var(--ww-cash-green-2) 0%, var(--ww-cash-green) 100%);
+
+  /* Shadows */
+  --shadow-sticker: 2.6px 2.6px 0 rgba(0,0,0,0.15);
+  --shadow-card: 0 8px 24px rgba(0,0,0,0.18);
+  --shadow-cta: 0 4px 0 rgba(0,0,0,0.20), 0 10px 24px rgba(29,124,235,0.4);
+  --glow-cyan: 0 0 32px 6px var(--ww-cyan-glow);
+
+  /* Radii */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  /* Spacing */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px;  --sp-4: 16px;
+  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px;  --sp-8: 64px;  --sp-9: 96px;
+}
+
+/* ------------- TYPE ------------- */
+/* Primary (App & Web): SF Pro. Alternative (Marketing & Video): Proxima Nova.
+   Web fallbacks: Inter Tight / Montserrat. Headlines use italic + all-caps. */
+:root {
+  --font-app: "SF Pro", "SF Pro Text", -apple-system, "Inter Tight", Inter, system-ui, sans-serif;
+  --font-marketing: "Proxima Nova", "Montserrat", "Inter Tight", system-ui, sans-serif;
+  --font-display: "Proxima Nova", "Montserrat", "Archivo Black", "Impact", sans-serif;
+
+  /* Scale (px) — decks 1920×1080. Minimum body = 24px for slides. */
+  --fs-hero: 120px;
+  --fs-display: 96px;
+  --fs-h1: 70px;
+  --fs-h2: 52px;
+  --fs-h3: 40px;
+  --fs-h4: 30px;
+  --fs-lede: 28px;
+  --fs-body: 24px;
+  --fs-small: 18px;
+  --fs-caption: 14px;
+
+  /* Mobile app scale */
+  --fs-app-title: 28px;
+  --fs-app-h: 20px;
+  --fs-app-body: 16px;
+  --fs-app-small: 13px;
+
+  /* Weights */
+  --fw-regular: 400;
+  --fw-semi: 600;
+  --fw-bold: 700;
+  --fw-black: 900;
+}
+
+/* Semantic text */
+h1, .h1 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-black);
+  font-style: italic;
+  font-size: var(--fs-h1);
+  line-height: 1.0;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--fg-1);
+  margin: 0;
+}
+h2, .h2 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-black);
+  font-style: italic;
+  font-size: var(--fs-h2);
+  line-height: 1.05;
+  text-transform: uppercase;
+  margin: 0;
+}
+h3, .h3 {
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h3);
+  line-height: 1.1;
+  margin: 0;
+}
+h4, .h4 {
+  font-family: var(--font-marketing);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h4);
+  line-height: 1.15;
+  margin: 0;
+}
+p, .body {
+  font-family: var(--font-marketing);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-body);
+  line-height: 1.4;
+  color: var(--fg-2);
+  margin: 0;
+}
+.lede {
+  font-family: var(--font-marketing);
+  font-weight: var(--fw-semi);
+  font-size: var(--fs-lede);
+  line-height: 1.3;
+}
+.small { font-size: var(--fs-small); line-height: 1.4; }
+.caption { font-size: var(--fs-caption); line-height: 1.3; letter-spacing: 0.02em; }
+
+/* Signature highlight: yellow or cyan block, rotated 8° */
+.highlight,
+.highlight-yellow { background: var(--ww-yellow-pure); color: var(--ww-black); padding: 0.05em 0.15em; display: inline-block; transform: rotate(-8deg); }
+.highlight-cyan   { background: var(--ww-cyan);      color: var(--ww-black); padding: 0.05em 0.15em; display: inline-block; transform: rotate(-8deg); }
+
+/* Sticker-style marketing badge — yellow $ number + white text on blue, offset shadow */
+.sticker {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: var(--fw-black);
+  text-transform: uppercase;
+  transform: rotate(-8deg);
+  box-shadow: var(--shadow-sticker);
+}

@@ -1,0 +1,33 @@
+/* Pixel Museum — Typography tokens
+   One typeface: system Helvetica/Arial. Two voices —
+   tight bold display + small UPPERCASE tracked labels.
+   Photographs render pixelated (image-rendering:pixelated);
+   never apply a "pixel font" to chrome in this system. */
+:root {
+  --pm-font-sans: Helvetica, "Helvetica Neue", Arial, sans-serif;
+
+  /* Sizes */
+  --pm-size-display: 84px;  /* gallery title */
+  --pm-size-h1:      44px;  /* section heading */
+  --pm-size-h2:      34px;  /* phase heading */
+  --pm-size-body:    17px;
+  --pm-size-small:   14px;
+  --pm-size-label:   13px;  /* tracked uppercase eyebrow */
+  --pm-size-micro:   11px;  /* plaque / button label */
+
+  /* Weights */
+  --pm-weight-regular: 400;
+  --pm-weight-medium:  600;
+  --pm-weight-bold:    700;
+
+  /* Line heights */
+  --pm-leading-display: 0.95;
+  --pm-leading-tight:   1.1;
+  --pm-leading-body:    1.5;
+
+  /* Letter spacing */
+  --pm-tracking-display: -3px;  /* big display is tightly set */
+  --pm-tracking-h1:      -1px;
+  --pm-tracking-label:   2px;   /* uppercase labels */
+  --pm-tracking-wordmark:5px;   /* PIXEL PIX wordmark */
+}

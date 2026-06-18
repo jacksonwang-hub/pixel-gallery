@@ -1,0 +1,53 @@
+<!-- @dsCard group="Pixel Museum" viewport="1280x720" subtitle="Curate intake screen" name="Pixel Museum — app" -->
+<!-- @startingPoint section="Pixel Museum" subtitle="White-cube photo gallery app" viewport="1280x800" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../styles.css">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--pm-font-sans);color:var(--pm-text-strong);background:var(--pm-wall-white)}
+  .bar{position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:#fff;border-bottom:1px solid var(--pm-border);z-index:10}
+  .wm{font-size:13px;font-weight:700;letter-spacing:5px}
+  .seg{display:flex;gap:2px;border:1px solid var(--pm-border)}
+  .seg button{font-family:var(--pm-font-sans);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:11px 22px;border:none;cursor:pointer}
+  .on{background:var(--pm-accent);color:#fff}.off{background:#fff;color:var(--pm-text-body)}
+  .wrap{max-width:840px;margin:0 auto;padding:128px 24px 80px;text-align:center}
+  .eyebrow{font-size:13px;letter-spacing:4px;color:var(--pm-ink-400);text-transform:uppercase}
+  .h1{font-size:44px;font-weight:700;letter-spacing:-1px;margin-top:10px}
+  .sub{font-size:17px;margin-top:12px;color:var(--pm-text-body);line-height:1.5}
+  .panel{margin-top:36px;background:#fff;padding:28px;border:1px solid #e6e6e6;box-shadow:var(--pm-shadow-card);text-align:left}
+  .drop{display:flex;flex-direction:column;align-items:center;gap:12px;padding:40px;background:var(--pm-surface-sub);border:1px dashed var(--pm-ink-300)}
+  .plus{width:40px;height:40px;position:relative}
+  .plus i{position:absolute;background:#111}.plus .v{left:18px;top:4px;width:4px;height:32px}.plus .h{left:4px;top:18px;width:32px;height:4px}
+  .dlabel{font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase}
+  .dhint{font-size:14px;color:var(--pm-ink-400)}
+  .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;margin-top:24px}
+  .thumb{background:#fff;padding:6px;box-shadow:var(--pm-frame-rule)}
+  .thumb .well{aspect-ratio:1/1;overflow:hidden;background:var(--pm-surface-fill)}
+  .thumb svg{display:block;width:100%;height:100%;image-rendering:pixelated}
+  .foot{display:flex;align-items:center;justify-content:space-between;margin-top:26px;padding-top:22px;border-top:1px solid var(--pm-border-soft)}
+  .count{font-size:13px;letter-spacing:2px;color:var(--pm-ink-400);text-transform:uppercase}
+  .ship{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:15px 26px;border:none;cursor:pointer;background:var(--pm-accent);color:#fff}
+  .tri{width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:9px solid #fff}
+  .floor{position:fixed;bottom:0;left:0;right:0;height:72px;background:var(--pm-floor);box-shadow:inset 0 1px 0 var(--pm-floor-edge)}
+</style></head>
+<body>
+  <div class="bar">
+    <div class="wm">PIXEL&nbsp;PIX</div>
+    <div class="seg"><button class="on">Curate</button><button class="off">Gallery</button></div>
+  </div>
+  <div class="floor"></div>
+  <div class="wrap">
+    <div class="eyebrow">Exhibition intake</div>
+    <div class="h1">Curate</div>
+    <div class="sub">Add up to ten photographs. We&rsquo;ll crate them and ship them to your gallery wall.</div>
+    <div class="panel">
+      <div class="drop"><div class="plus"><i class="v"></i><i class="h"></i></div><div class="dlabel">Drop or click to add</div><div class="dhint">JPG · PNG · up to 10 photos</div></div>
+      <div class="grid" id="grid"></div>
+      <div class="foot"><div class="count">3 / 10</div><button class="ship">Ship it <span class="tri"></span></button></div>
+    </div>
+  </div>
+  <script>
+    const palettes=[['#244b73','#5b7aa8','#d98a64','#2c3e57'],['#3a5a40','#a3b18a','#dad7cd','#344e41'],['#6d597a','#b56576','#eaac8b','#355070']];
+    const svg=(p)=>`<svg viewBox="0 0 16 16" shape-rendering="crispEdges" preserveAspectRatio="none"><rect x="0" y="0" width="16" height="9" fill="${p[1]}"/><rect x="0" y="6" width="16" height="3" fill="${p[2]}"/><rect x="10" y="2" width="3" height="3" fill="#f3d77a"/><rect x="0" y="9" width="16" height="7" fill="${p[3]}"/><rect x="7" y="10" width="9" height="6" fill="${p[0]}"/></svg>`;
+    document.getElementById('grid').innerHTML=palettes.map(p=>`<div class="thumb"><div class="well">${svg(p)}</div></div>`).join('');
+  </script>
+</body></html>

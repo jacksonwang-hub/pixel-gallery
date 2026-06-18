@@ -1,0 +1,13 @@
+<!-- @dsCard group="Spacing" viewport="700x170" subtitle="Square by default; quiet shadows; the 1.5px keyline" name="Radius, shadow & keyline" -->
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../styles.css">
+<style>body{margin:0;font-family:var(--pm-font-sans);background:#fff;padding:24px}
+.row{display:flex;gap:34px;align-items:center}
+.item{display:flex;flex-direction:column;gap:10px;align-items:center}
+.box{width:84px;height:64px;background:#fff}
+.lbl{font-size:10px;letter-spacing:1px;color:var(--pm-ink-500);text-transform:uppercase}</style></head>
+<body><div class="row">
+<div class="item"><div class="box" style="border-radius:0;box-shadow:var(--pm-shadow-card)"></div><div class="lbl">radius 0 · card</div></div>
+<div class="item"><div class="box" style="border-radius:0;box-shadow:var(--pm-frame-rule),var(--pm-shadow-frame)"></div><div class="lbl">keyline · frame</div></div>
+<div class="item"><div class="box" style="border-radius:4px;border:1px solid var(--pm-ink-300)"></div><div class="lbl">radius 4 · keycap</div></div>
+<div class="item"><div class="box" style="box-shadow:var(--pm-shadow-hud);border:1px solid var(--pm-border)"></div><div class="lbl">hud shadow</div></div>
+</div></body></html>

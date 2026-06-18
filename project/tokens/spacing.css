@@ -1,0 +1,34 @@
+/* Pixel Museum — Spacing, radius, shadow, motion
+   Sharp by default (museum mats and keylines are square);
+   radius is reserved for tiny utilities (keycaps, the remove dot). */
+:root {
+  /* 4px base scale */
+  --pm-space-1: 4px;
+  --pm-space-2: 8px;
+  --pm-space-3: 12px;
+  --pm-space-4: 16px;
+  --pm-space-5: 22px;
+  --pm-space-6: 28px;
+  --pm-space-8: 40px;
+  --pm-space-10: 64px;
+
+  /* Radius */
+  --pm-radius-0: 0px;     /* default — frames, cards, mats */
+  --pm-radius-sm: 4px;    /* keycaps */
+  --pm-radius-full: 999px;/* remove dot */
+
+  /* The signature 1.5px black keyline used on frames & crates */
+  --pm-frame-rule: 0 0 0 1.5px var(--pm-rule);
+
+  /* Shadows — quiet, never heavy */
+  --pm-shadow-card:  0 1px 3px rgba(0,0,0,0.05);
+  --pm-shadow-frame: 0 8px 24px rgba(0,0,0,0.08);
+  --pm-shadow-hud:   0 4px 16px rgba(0,0,0,0.06);
+  --pm-shadow-zoom:  0 24px 60px rgba(0,0,0,0.18);
+
+  /* Motion */
+  --pm-ease-glide: cubic-bezier(.22,.61,.36,1); /* track / pan */
+  --pm-ease-pop:   cubic-bezier(.5,-0.3,.6,1);  /* crate launch */
+  --pm-dur-fast:   0.15s;
+  --pm-dur-mid:    0.45s;
+}
