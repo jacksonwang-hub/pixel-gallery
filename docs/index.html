@@ -1,0 +1,1839 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pixel Pix — Design System</title>
+<style>
+/* ─── Design-system tokens (source: project/tokens/) ─────────────── */
+:root {
+  --pm-white:    #ffffff;
+  --pm-ink-50:   #fafafa;
+  --pm-ink-100:  #f2f2f2;
+  --pm-ink-150:  #ededed;
+  --pm-ink-200:  #e4e4e4;
+  --pm-ink-300:  #cfcfcf;
+  --pm-ink-400:  #9a9a9a;
+  --pm-ink-500:  #6e6e6e;
+  --pm-ink-700:  #2a2a2a;
+  --pm-ink-900:  #111111;
+
+  --pm-wall-white: #ffffff;
+  --pm-wall-bone:  #f6f4ef;
+  --pm-wall-cool:  #f4f6f7;
+  --pm-floor:      #efeeea;
+  --pm-floor-bone: #e9e6df;
+  --pm-floor-cool: #e8ebec;
+  --pm-floor-edge: #e0ded8;
+
+  --pm-text-strong:  var(--pm-ink-900);
+  --pm-text-body:    var(--pm-ink-500);
+  --pm-text-muted:   var(--pm-ink-400);
+  --pm-text-invert:  var(--pm-white);
+  --pm-surface:      var(--pm-white);
+  --pm-surface-sub:  var(--pm-ink-50);
+  --pm-surface-fill: var(--pm-ink-100);
+  --pm-border:       var(--pm-ink-200);
+  --pm-border-soft:  var(--pm-ink-150);
+  --pm-rule:         var(--pm-ink-900);
+  --pm-accent:       var(--pm-ink-900);
+  --pm-accent-text:  var(--pm-white);
+
+  --pm-font-sans: Helvetica, "Helvetica Neue", Arial, sans-serif;
+
+  --pm-size-display: 84px;
+  --pm-size-h1: 44px;
+  --pm-size-h2: 34px;
+  --pm-size-body: 17px;
+  --pm-size-small: 14px;
+  --pm-size-label: 13px;
+  --pm-size-micro: 11px;
+
+  --pm-weight-regular: 400;
+  --pm-weight-medium: 600;
+  --pm-weight-bold: 700;
+
+  --pm-leading-display: 0.95;
+  --pm-leading-tight: 1.1;
+  --pm-leading-body: 1.5;
+
+  --pm-tracking-display: -3px;
+  --pm-tracking-h1: -1px;
+  --pm-tracking-label: 2px;
+  --pm-tracking-wordmark: 5px;
+
+  --pm-space-1: 4px;
+  --pm-space-2: 8px;
+  --pm-space-3: 12px;
+  --pm-space-4: 16px;
+  --pm-space-5: 22px;
+  --pm-space-6: 28px;
+  --pm-space-8: 40px;
+  --pm-space-10: 64px;
+
+  --pm-radius-0: 0px;
+  --pm-radius-sm: 4px;
+  --pm-radius-full: 999px;
+
+  --pm-frame-rule: 0 0 0 1.5px var(--pm-rule);
+  --pm-shadow-card: 0 1px 3px rgba(0,0,0,.05);
+  --pm-shadow-frame: 0 8px 24px rgba(0,0,0,.08);
+  --pm-shadow-hud: 0 4px 16px rgba(0,0,0,.06);
+  --pm-shadow-zoom: 0 24px 60px rgba(0,0,0,.18);
+
+  --pm-ease-glide: cubic-bezier(.22,.61,.36,1);
+  --pm-ease-pop:   cubic-bezier(.5,-.3,.6,1);
+  --pm-dur-fast: 0.15s;
+  --pm-dur-mid:  0.45s;
+}
+
+/* ─── Doc chrome ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+
+body {
+  font-family: var(--pm-font-sans);
+  font-size: 14px;
+  color: var(--pm-text-strong);
+  background: #f0f0ef;
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--pm-ink-900);
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  padding: 0 0 40px;
+}
+
+.sidebar-wordmark {
+  padding: 24px 20px 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--pm-white);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  margin-bottom: 8px;
+}
+.sidebar-wordmark span {
+  display: block;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: var(--pm-ink-400);
+  margin-top: 4px;
+}
+
+.sidebar-group { padding: 16px 0 4px; }
+.sidebar-group-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--pm-ink-500);
+  padding: 0 20px 6px;
+}
+.sidebar a {
+  display: block;
+  padding: 7px 20px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--pm-ink-400);
+  text-decoration: none;
+  transition: color .1s, background .1s;
+}
+.sidebar a:hover { color: var(--pm-white); background: rgba(255,255,255,.04); }
+.sidebar a.active { color: var(--pm-white); font-weight: 600; }
+
+/* Main */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 48px 56px 120px;
+  max-width: 1060px;
+}
+
+/* Section */
+.doc-section {
+  margin-bottom: 80px;
+  scroll-margin-top: 32px;
+}
+
+.section-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--pm-ink-400);
+  margin-bottom: 6px;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--pm-ink-900);
+  margin-bottom: 8px;
+}
+
+.section-desc {
+  font-size: 14px;
+  color: var(--pm-ink-500);
+  line-height: 1.6;
+  max-width: 640px;
+  margin-bottom: 32px;
+}
+
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--pm-ink-200);
+  margin-bottom: 48px;
+}
+
+/* Component canvas */
+.canvas {
+  background: var(--pm-wall-white);
+  border: 1px solid var(--pm-ink-200);
+  padding: 40px;
+  margin-bottom: 8px;
+}
+.canvas.canvas-dark { background: var(--pm-ink-900); }
+.canvas.canvas-floor { background: var(--pm-floor); }
+.canvas.canvas-sub  { background: var(--pm-ink-50); }
+
+.canvas-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--pm-ink-400);
+  margin-bottom: 24px;
+}
+
+/* State strip */
+.state-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.state-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.state-tag {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--pm-ink-400);
+}
+
+/* Token table */
+.token-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-bottom: 32px;
+}
+.token-table th {
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--pm-ink-400);
+  border-bottom: 1px solid var(--pm-ink-200);
+}
+.token-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--pm-ink-150);
+  vertical-align: middle;
+  color: var(--pm-ink-700);
+}
+.token-table td:first-child { font-family: monospace; font-size: 11px; color: var(--pm-ink-500); }
+.token-table tr:last-child td { border-bottom: none; }
+
+/* Swatch */
+.swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.swatch {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.swatch-block {
+  height: 60px;
+  border: 1px solid rgba(0,0,0,.06);
+}
+.swatch-name {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .5px;
+  color: var(--pm-ink-700);
+}
+.swatch-hex {
+  font-size: 10px;
+  font-family: monospace;
+  color: var(--pm-ink-400);
+}
+
+/* Spacing ruler */
+.space-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.space-bar {
+  background: var(--pm-ink-900);
+  height: 16px;
+  flex-shrink: 0;
+}
+.space-meta { font-size: 12px; color: var(--pm-ink-500); font-family: monospace; }
+.space-name { font-size: 11px; color: var(--pm-ink-400); min-width: 100px; }
+
+/* Motion row */
+.motion-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--pm-ink-150);
+}
+.motion-row:last-child { border-bottom: none; }
+.motion-name { font-size: 12px; font-family: monospace; color: var(--pm-ink-500); min-width: 140px; }
+.motion-val  { font-size: 12px; color: var(--pm-ink-700); flex: 1; }
+.motion-tag  { font-size: 10px; color: var(--pm-ink-400); min-width: 80px; text-align: right; }
+
+/* Subsection */
+.subsection-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--pm-ink-700);
+  margin: 36px 0 16px;
+  padding-top: 36px;
+  border-top: 1px solid var(--pm-ink-150);
+}
+.subsection-title:first-of-type { border-top: none; margin-top: 0; padding-top: 0; }
+
+/* ─── Pixel Pix component styles (exact match to App.jsx) ─────────── */
+
+/* -- Top bar -- */
+.pm-topbar {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  background: var(--pm-surface);
+  border-bottom: 1px solid var(--pm-ink-200);
+}
+.pm-wordmark {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  color: var(--pm-ink-900);
+}
+
+/* -- Section toggle -- */
+.pm-toggle {
+  display: flex;
+  gap: 2px;
+  border: 1px solid var(--pm-ink-200);
+}
+.pm-toggle-btn {
+  font-family: var(--pm-font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 11px 22px;
+  border: none;
+  cursor: pointer;
+  background: var(--pm-surface);
+  color: var(--pm-ink-500);
+}
+.pm-toggle-btn.is-active {
+  background: var(--pm-ink-900);
+  color: var(--pm-white);
+}
+
+/* -- Buttons -- */
+.pm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--pm-font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 15px 26px;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  background: var(--pm-accent);
+  color: var(--pm-accent-text);
+}
+.pm-btn.sm { font-size: 11px; padding: 11px 18px; }
+.pm-btn.lg { padding: 16px 28px; }
+.pm-btn.ghost {
+  background: var(--pm-surface);
+  color: var(--pm-text-strong);
+  box-shadow: inset 0 0 0 1px var(--pm-border);
+}
+/* States rendered as classes for static DOM */
+.pm-btn.is-hover { background: var(--pm-ink-700); }
+.pm-btn.is-hover.ghost { background: var(--pm-ink-50); }
+.pm-btn.is-active { background: var(--pm-ink-700); transform: scale(.98); }
+.pm-btn.is-disabled {
+  background: var(--pm-surface-fill);
+  color: var(--pm-text-muted);
+  cursor: default;
+}
+
+/* Arrow inside button */
+.pm-btn-arrow {
+  width: 0; height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 9px solid #fff;
+}
+.pm-btn.ghost .pm-btn-arrow { border-left-color: #111; }
+.pm-btn.is-disabled .pm-btn-arrow { border-left-color: var(--pm-ink-400); }
+
+/* -- Keycap -- */
+.pm-keycap {
+  width: 32px; height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--pm-ink-300);
+  border-radius: var(--pm-radius-sm);
+}
+
+/* Arrow triangles */
+.tri-left  { width:0;height:0; border-top:6px solid transparent; border-bottom:6px solid transparent; border-right:9px solid var(--pm-ink-900); }
+.tri-right { width:0;height:0; border-top:6px solid transparent; border-bottom:6px solid transparent; border-left:9px solid var(--pm-ink-900);  }
+.tri-up    { width:0;height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-bottom:9px solid var(--pm-ink-900);}
+.tri-down  { width:0;height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-top:9px solid var(--pm-ink-900);   }
+.tri-down-sm{width:0;height:0; border-left:5px solid transparent; border-right:5px solid transparent; border-top:8px solid var(--pm-ink-900);    }
+
+/* -- Art frame -- */
+.pm-frame {
+  position: relative;
+  background: var(--pm-surface);
+  padding: 3px;
+  box-shadow: var(--pm-frame-rule), var(--pm-shadow-frame);
+  display: inline-block;
+}
+.pm-frame-mat {
+  background: var(--pm-surface);
+  padding: 22px;
+}
+.pm-frame-well {
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--pm-ink-300);
+  background: var(--pm-surface-fill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.pm-frame-well-text {
+  text-align: center;
+  color: var(--pm-ink-300);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Focused vs unfocused */
+.pm-frame-wrap {
+  transition: transform .45s ease, opacity .45s ease;
+  position: relative;
+}
+.pm-frame-wrap.is-focused { transform: scale(1.06); opacity: 1; }
+.pm-frame-wrap.is-unfocused { transform: scale(0.84); opacity: .55; }
+
+/* Spotlight cone */
+.pm-spotlight {
+  position: absolute;
+  left: 50%; top: -100px;
+  transform: translateX(-50%);
+  width: 140px; height: 100px;
+  background: linear-gradient(to bottom, rgba(0,0,0,.05), rgba(0,0,0,0));
+  clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%);
+  pointer-events: none;
+}
+
+/* -- Plaque -- */
+.pm-plaque { display: flex; flex-direction: column; align-items: center; margin-top: 22px; }
+.pm-plaque-title {
+  font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--pm-ink-900);
+}
+.pm-plaque-sub { font-size: 12px; color: var(--pm-ink-400); margin-top: 3px; letter-spacing: .5px; }
+
+/* -- Dropzone -- */
+.pm-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px;
+  background: var(--pm-ink-50);
+  border: 1px dashed var(--pm-ink-300);
+  cursor: pointer;
+}
+.pm-dropzone.is-hover {
+  background: var(--pm-ink-100);
+  border-color: var(--pm-ink-900);
+}
+.pm-dropzone-icon { width: 40px; height: 40px; position: relative; }
+.pm-dropzone-icon::before {
+  content:''; position:absolute; left:18px; top:4px; width:4px; height:32px; background:var(--pm-ink-900);
+}
+.pm-dropzone-icon::after {
+  content:''; position:absolute; left:4px; top:18px; width:32px; height:4px; background:var(--pm-ink-900);
+}
+.pm-dropzone-label {
+  font-size: 13px; font-weight: 600; letter-spacing: 2px; color: var(--pm-ink-900); text-transform: uppercase;
+}
+.pm-dropzone-hint { font-size: 14px; color: var(--pm-ink-400); letter-spacing: .5px; }
+
+/* -- Thumbnail -- */
+.pm-thumb-card {
+  background: var(--pm-white);
+  padding: 6px;
+  box-shadow: var(--pm-frame-rule);
+  position: relative;
+  display: inline-block;
+}
+.pm-thumb-img {
+  width: 72px; height: 72px;
+  background: linear-gradient(135deg, #d4c4a8 0%, #b8a88a 50%, #c8b894 100%);
+  overflow: hidden;
+}
+.pm-thumb-remove {
+  position: absolute;
+  top: -8px; right: -8px;
+  width: 22px; height: 22px;
+  border: none;
+  border-radius: var(--pm-radius-full);
+  background: var(--pm-ink-900);
+  color: var(--pm-white);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* -- Progress bar -- */
+.pm-progress-track {
+  height: 6px;
+  background: var(--pm-ink-150);
+  max-width: 420px;
+}
+.pm-progress-fill {
+  height: 6px;
+  background: var(--pm-ink-900);
+  transition: width .4s ease;
+}
+
+/* -- HUD -- */
+.pm-hud {
+  display: inline-flex;
+  gap: 28px;
+  align-items: center;
+  background: var(--pm-surface);
+  padding: 14px 24px;
+  border: 1px solid var(--pm-ink-200);
+  box-shadow: var(--pm-shadow-hud);
+}
+.pm-hud-item { display: flex; align-items: center; gap: 10px; }
+.pm-hud-keys { display: flex; gap: 4px; }
+.pm-hud-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 2px; color: var(--pm-ink-500); text-transform: uppercase;
+}
+
+/* -- Upload card -- */
+.pm-upload-card {
+  background: var(--pm-white);
+  padding: 28px;
+  border: 1px solid var(--pm-ink-200);
+  box-shadow: var(--pm-shadow-card);
+}
+
+/* -- Floor strip -- */
+.pm-floor-strip {
+  height: 72px;
+  background: var(--pm-floor);
+  box-shadow: inset 0 1px 0 var(--pm-floor-edge);
+}
+
+/* -- Gallery env -- */
+.pm-gallery-env {
+  position: relative;
+  background: var(--pm-wall-white);
+  height: 360px;
+  overflow: hidden;
+}
+.pm-gallery-floor {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 120px;
+  background: var(--pm-floor);
+  box-shadow: inset 0 1px 0 var(--pm-floor-edge);
+}
+.pm-gallery-baseboard {
+  position: absolute;
+  bottom: 120px; left: 0; right: 0;
+  height: 1px;
+  background: var(--pm-ink-300);
+}
+
+/* -- Shipping crate image proxy -- */
+.pm-crate-proxy {
+  width: 200px; height: 96px;
+  background: linear-gradient(135deg, #d4a96a 0%, #c49050 40%, #b8803c 100%);
+  position: relative;
+  border: 2px solid #3a2a10;
+  display: flex; align-items: center; justify-content: center;
+}
+.pm-crate-proxy::before {
+  content:'CRATE';
+  font-size: 9px; font-weight: 700; letter-spacing: 2px; color: rgba(0,0,0,.3);
+}
+
+/* -- Zoom overlay -- */
+.pm-zoom-overlay {
+  background: rgba(255,255,255,.96);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 40px;
+}
+
+/* -- Photo mock (pixelated gradient) -- */
+.photo-mock {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg,
+    #8b6f5c 0%, #c4956a 20%, #e8c49a 40%,
+    #a0c4d8 60%, #6a98b4 80%, #4a7898 100%);
+  image-rendering: pixelated;
+}
+
+/* -- Walker sprite placeholder -- */
+.pm-walker {
+  width: 32px; height: 80px;
+  background: var(--pm-ink-900);
+  position: relative;
+  /* head */
+}
+.pm-walker::before {
+  content:''; position:absolute; top:-14px; left:50%; transform:translateX(-50%);
+  width:20px; height:14px; background:var(--pm-ink-700);
+}
+
+/* Keyframe animation strip (static representation) */
+.anim-strip {
+  display: flex;
+  gap: 2px;
+  align-items: flex-end;
+  margin-top: 8px;
+}
+.anim-frame {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--pm-ink-50);
+  border: 1px solid var(--pm-ink-200);
+  font-size: 9px; color: var(--pm-ink-400); font-weight: 600;
+  position: relative;
+  flex-shrink: 0;
+}
+.anim-frame.key {
+  background: var(--pm-ink-900); color: var(--pm-white);
+  border-color: var(--pm-ink-900);
+}
+.anim-arrow {
+  font-size: 8px; color: var(--pm-ink-400); align-self: center;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .sidebar { width: 180px; }
+  .main { padding: 32px 28px 80px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════ SIDEBAR ════════════════════ -->
+<nav class="sidebar">
+  <div class="sidebar-wordmark">
+    PIXEL PIX
+    <span>DESIGN SYSTEM</span>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Foundations</div>
+    <a href="#color">Color</a>
+    <a href="#typography">Typography</a>
+    <a href="#spacing">Spacing</a>
+    <a href="#motion">Motion</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Atoms</div>
+    <a href="#button">Button</a>
+    <a href="#keycap">Keycap</a>
+    <a href="#icons">Icons</a>
+    <a href="#plaque">Plaque</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Molecules</div>
+    <a href="#art-frame">Art Frame</a>
+    <a href="#section-toggle">Section Toggle</a>
+    <a href="#dropzone">Dropzone</a>
+    <a href="#thumbnail">Thumbnail</a>
+    <a href="#progress">Progress Bar</a>
+    <a href="#hud">HUD</a>
+  </div>
+
+  <div class="sidebar-group">
+    <div class="sidebar-group-label">Organisms</div>
+    <a href="#top-bar">Top Bar</a>
+    <a href="#curate-select">Curate — Select</a>
+    <a href="#curate-shipping">Curate — Shipping</a>
+    <a href="#curate-delivered">Curate — Delivered</a>
+    <a href="#gallery-title">Gallery — Title</a>
+    <a href="#gallery-slot">Gallery — Photo Slot</a>
+    <a href="#zoom-overlay">Zoom Overlay</a>
+  </div>
+</nav>
+
+<!-- ════════════════════ MAIN CONTENT ════════════════════ -->
+<main class="main">
+
+  <!-- ══ PAGE HEADER ══ -->
+  <div style="margin-bottom:56px; padding-bottom:32px; border-bottom:1px solid var(--pm-ink-200);">
+    <p style="font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--pm-ink-400);margin-bottom:8px;">Pixel Pix</p>
+    <h1 style="font-size:48px;font-weight:700;letter-spacing:-2px;line-height:.95;color:var(--pm-ink-900);margin-bottom:16px;">Design System</h1>
+    <p style="font-size:15px;color:var(--pm-ink-500);line-height:1.6;max-width:560px;">
+      White Cube museum aesthetic. Near-monochrome neutrals, crisp black hairlines, Helvetica
+      throughout. All colour comes from the pixel artworks themselves.
+    </p>
+    <div style="display:flex;gap:24px;margin-top:24px;font-size:11px;color:var(--pm-ink-400);">
+      <span>Source&nbsp;<code style="font-family:monospace;background:var(--pm-ink-100);padding:2px 6px;">app/src/</code></span>
+      <span>Tokens&nbsp;<code style="font-family:monospace;background:var(--pm-ink-100);padding:2px 6px;">project/tokens/</code></span>
+      <span>Components&nbsp;<code style="font-family:monospace;background:var(--pm-ink-100);padding:2px 6px;">project/components/core/</code></span>
+    </div>
+  </div>
+
+  <!-- ══════════ FOUNDATIONS ══════════ -->
+
+  <!-- ── Color ── -->
+  <section class="doc-section" id="color">
+    <p class="section-eyebrow">Foundations</p>
+    <h2 class="section-title">Color</h2>
+    <p class="section-desc">
+      Ten-step ink scale plus warm/cool gallery environment tones.
+      Semantic aliases map intent to value so components never hardcode hex.
+      Source: <code style="font-family:monospace;font-size:12px;">project/tokens/colors.css</code>
+    </p>
+
+    <p class="subsection-title">Ink scale</p>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-block" style="background:#ffffff;border:1px solid #e4e4e4;"></div><div class="swatch-name">White</div><div class="swatch-hex">--pm-white · #ffffff</div></div>
+      <div class="swatch"><div class="swatch-block" style="background:#fafafa;"></div><div class="swatch-name">Ink 50</div><div class="swatch-hex">--pm-ink-50 · #fafafa</div></div>
+      <div class="swatch"><div class="swatch-block" style="background:#f2f2f2;"></div><div class="swatch-name">Ink 100</div><div class="swatch-hex">--pm-ink-100 · #f2f2f2</div></div>
+      <div class="swatch"><div class="swatch-block" style="background:#ededed;"></div><div class="swatch-name">Ink 150</div><div class="swatch-hex">--pm-ink-150 · #ededed</div></div>
+      <div class="swatch"><div class="swatch-block" style="background:#e4e4e4;"></div><div class="swatch-name">Ink 200</div><div class="swatch-hex">--pm-ink-200 · #e4e4e4</div></div>
+      <div class="swatch"><div class="swatch-block" style="background:#cfcfcf;"></div><div class="swatch-name">Ink 300</div><div class="swatch-hex">--pm-ink-300 · #cfcfcf</div></div>
+      <div class="swatch"><div class="swatch-block" style="background:#9a9a9a;"></div><div class="swatch-name">Ink 400</div><div class="swatch-hex">--pm-ink-400 · #9a9a9a</div></div>
+      <div class="swatch"><div class="swatch-block" style="background:#6e6e6e;"></div><div class="swatch-name">Ink 500</div><div class="swatch-hex">--pm-ink-500 · #6e6e6e</div></div>
+      <div class="swatch"><div class="swatch-block" style="background:#2a2a2a;"></div><div class="swatch-name">Ink 700</div><div class="swatch-hex">--pm-ink-700 · #2a2a2a</div></div>
+      <div class="swatch"><div class="swatch-block" style="background:#111111;"></div><div class="swatch-name">Ink 900</div><div class="swatch-hex">--pm-ink-900 · #111111</div></div>
+    </div>
+
+    <p class="subsection-title">Gallery environment</p>
+    <div class="swatch-grid">
+      <div class="swatch"><div class="swatch-block" style="background:#ffffff;border:1px solid #e4e4e4;"></div><div class="swatch-name">Wall White</div><div class="swatch-hex">--pm-wall-white</div></div>
+      <div class="swatch"><div class="swatch-block" style="background:#f6f4ef;"></div><div class="swatch-name">Wall Bone</div><div class="swatch-hex">--pm-wall-bone</div></div>
+      <div class="swatch"><div class="swatch-block" style="background:#f4f6f7;"></div><div class="swatch-name">Wall Cool</div><div class="swatch-hex">--pm-wall-cool</div></div>
+      <div class="swatch"><div class="swatch-block" style="background:#efeeea;"></div><div class="swatch-name">Floor</div><div class="swatch-hex">--pm-floor</div></div>
+      <div class="swatch"><div class="swatch-block" style="background:#e9e6df;"></div><div class="swatch-name">Floor Bone</div><div class="swatch-hex">--pm-floor-bone</div></div>
+      <div class="swatch"><div class="swatch-block" style="background:#e8ebec;"></div><div class="swatch-name">Floor Cool</div><div class="swatch-hex">--pm-floor-cool</div></div>
+      <div class="swatch"><div class="swatch-block" style="background:#e0ded8;"></div><div class="swatch-name">Floor Edge</div><div class="swatch-hex">--pm-floor-edge</div></div>
+    </div>
+
+    <p class="subsection-title">Semantic aliases</p>
+    <table class="token-table">
+      <thead><tr><th>Token</th><th>Resolves to</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td>--pm-text-strong</td><td>--pm-ink-900 · #111</td><td>Headings, labels, icon fills</td></tr>
+        <tr><td>--pm-text-body</td><td>--pm-ink-500 · #6e6e6e</td><td>Body copy, descriptions</td></tr>
+        <tr><td>--pm-text-muted</td><td>--pm-ink-400 · #9a9a9a</td><td>Eyebrows, captions, placeholders</td></tr>
+        <tr><td>--pm-text-invert</td><td>--pm-white · #fff</td><td>Text on black surfaces</td></tr>
+        <tr><td>--pm-surface</td><td>--pm-white</td><td>Cards, overlays, mats</td></tr>
+        <tr><td>--pm-surface-sub</td><td>--pm-ink-50</td><td>Dropzone background</td></tr>
+        <tr><td>--pm-surface-fill</td><td>--pm-ink-100</td><td>Image well fill, disabled button</td></tr>
+        <tr><td>--pm-border</td><td>--pm-ink-200</td><td>Default hairline borders</td></tr>
+        <tr><td>--pm-border-soft</td><td>--pm-ink-150</td><td>Subtle row separators</td></tr>
+        <tr><td>--pm-rule</td><td>--pm-ink-900</td><td>Frame keyline (1.5px black)</td></tr>
+        <tr><td>--pm-accent</td><td>--pm-ink-900</td><td>Primary action background</td></tr>
+        <tr><td>--pm-accent-text</td><td>--pm-white</td><td>Text on primary actions</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── Typography ── -->
+  <section class="doc-section" id="typography">
+    <p class="section-eyebrow">Foundations</p>
+    <h2 class="section-title">Typography</h2>
+    <p class="section-desc">
+      One typeface: Helvetica / Arial. Two voices — tight bold display + small tracked
+      uppercase labels. Source: <code style="font-family:monospace;font-size:12px;">project/tokens/typography.css</code>
+    </p>
+
+    <div class="canvas">
+      <!-- Display -->
+      <div style="margin-bottom:32px;padding-bottom:28px;border-bottom:1px solid var(--pm-ink-150);">
+        <p style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pm-ink-400);margin-bottom:12px;">--pm-size-display · 84px / weight-bold / leading-display(.95) / tracking-display(-3px)</p>
+        <div style="font-family:var(--pm-font-sans);font-size:84px;font-weight:700;letter-spacing:-3px;line-height:.95;color:var(--pm-ink-900);">Pixel Pix</div>
+      </div>
+      <!-- H1 -->
+      <div style="margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--pm-ink-150);">
+        <p style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pm-ink-400);margin-bottom:12px;">--pm-size-h1 · 44px / weight-bold / tracking-h1(-1px)</p>
+        <div style="font-family:var(--pm-font-sans);font-size:44px;font-weight:700;letter-spacing:-1px;color:var(--pm-ink-900);">Curate</div>
+      </div>
+      <!-- H2 -->
+      <div style="margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--pm-ink-150);">
+        <p style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pm-ink-400);margin-bottom:12px;">--pm-size-h2 · 34px / weight-bold / tracking-h1(-1px)</p>
+        <div style="font-family:var(--pm-font-sans);font-size:34px;font-weight:700;letter-spacing:-0.5px;color:var(--pm-ink-900);">Shipping to the gallery</div>
+      </div>
+      <!-- Body -->
+      <div style="margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--pm-ink-150);">
+        <p style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pm-ink-400);margin-bottom:12px;">--pm-size-body · 17px / weight-regular / leading-body(1.5)</p>
+        <div style="font-family:var(--pm-font-sans);font-size:17px;font-weight:400;line-height:1.5;color:var(--pm-text-body);">Add up to ten photographs. We'll crate them and ship them to your gallery wall.</div>
+      </div>
+      <!-- Small -->
+      <div style="margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--pm-ink-150);">
+        <p style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pm-ink-400);margin-bottom:12px;">--pm-size-small · 14px / weight-regular</p>
+        <div style="font-family:var(--pm-font-sans);font-size:14px;font-weight:400;color:var(--pm-text-body);">JPG · PNG · up to 10 photos</div>
+      </div>
+      <!-- Label -->
+      <div style="margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--pm-ink-150);">
+        <p style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pm-ink-400);margin-bottom:12px;">--pm-size-label · 13px / weight-regular / tracking-label(2px) / uppercase</p>
+        <div style="font-family:var(--pm-font-sans);font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--pm-text-muted);">Exhibition intake</div>
+      </div>
+      <!-- Micro -->
+      <div>
+        <p style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pm-ink-400);margin-bottom:12px;">--pm-size-micro · 11px / weight-bold / tracking-label(2px) / uppercase</p>
+        <div style="font-family:var(--pm-font-sans);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pm-text-strong);">Photo 01 · archival pixel print</div>
+      </div>
+    </div>
+
+    <table class="token-table" style="margin-top:16px;">
+      <thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td>--pm-weight-regular</td><td>400</td><td>Body copy</td></tr>
+        <tr><td>--pm-weight-medium</td><td>600</td><td>Buttons, keycap labels, HUD</td></tr>
+        <tr><td>--pm-weight-bold</td><td>700</td><td>Headings, wordmark, plaques</td></tr>
+        <tr><td>--pm-tracking-wordmark</td><td>5px</td><td>PIXEL PIX top-bar logo</td></tr>
+        <tr><td>--pm-tracking-label</td><td>2px</td><td>All uppercase UI labels</td></tr>
+        <tr><td>--pm-tracking-display</td><td>-3px</td><td>84px gallery title</td></tr>
+        <tr><td>--pm-tracking-h1</td><td>-1px</td><td>44px section heading</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── Spacing ── -->
+  <section class="doc-section" id="spacing">
+    <p class="section-eyebrow">Foundations</p>
+    <h2 class="section-title">Spacing</h2>
+    <p class="section-desc">
+      4px base grid. Sharp corners by default — radius only for keycaps and the
+      circular remove button. Source: <code style="font-family:monospace;font-size:12px;">project/tokens/spacing.css</code>
+    </p>
+
+    <p class="subsection-title">Space scale</p>
+    <div class="canvas canvas-sub">
+      <div class="space-row"><div class="space-name" style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--pm-ink-500);">--pm-space-1</div><div class="space-bar" style="width:4px;"></div><div class="space-meta">4px</div></div>
+      <div class="space-row"><div class="space-name" style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--pm-ink-500);">--pm-space-2</div><div class="space-bar" style="width:8px;"></div><div class="space-meta">8px</div></div>
+      <div class="space-row"><div class="space-name" style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--pm-ink-500);">--pm-space-3</div><div class="space-bar" style="width:12px;"></div><div class="space-meta">12px</div></div>
+      <div class="space-row"><div class="space-name" style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--pm-ink-500);">--pm-space-4</div><div class="space-bar" style="width:16px;"></div><div class="space-meta">16px</div></div>
+      <div class="space-row"><div class="space-name" style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--pm-ink-500);">--pm-space-5</div><div class="space-bar" style="width:22px;"></div><div class="space-meta">22px · mat thickness</div></div>
+      <div class="space-row"><div class="space-name" style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--pm-ink-500);">--pm-space-6</div><div class="space-bar" style="width:28px;"></div><div class="space-meta">28px · card padding</div></div>
+      <div class="space-row"><div class="space-name" style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--pm-ink-500);">--pm-space-8</div><div class="space-bar" style="width:40px;"></div><div class="space-meta">40px · dropzone padding</div></div>
+      <div class="space-row"><div class="space-name" style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--pm-ink-500);">--pm-space-10</div><div class="space-bar" style="width:64px;"></div><div class="space-meta">64px · nav bar height</div></div>
+    </div>
+
+    <p class="subsection-title">Border radius</p>
+    <div class="state-strip" style="margin-bottom:32px;">
+      <div class="state-item">
+        <div class="state-tag">radius-0 · 0px</div>
+        <div style="width:48px;height:48px;background:var(--pm-ink-900);border-radius:0;"></div>
+        <div style="font-size:11px;color:var(--pm-ink-400);">Frames, cards, mats</div>
+      </div>
+      <div class="state-item">
+        <div class="state-tag">radius-sm · 4px</div>
+        <div style="width:48px;height:48px;background:var(--pm-ink-900);border-radius:4px;"></div>
+        <div style="font-size:11px;color:var(--pm-ink-400);">Keycaps</div>
+      </div>
+      <div class="state-item">
+        <div class="state-tag">radius-full · 999px</div>
+        <div style="width:48px;height:48px;background:var(--pm-ink-900);border-radius:999px;"></div>
+        <div style="font-size:11px;color:var(--pm-ink-400);">Remove button</div>
+      </div>
+    </div>
+
+    <p class="subsection-title">Shadows</p>
+    <table class="token-table">
+      <thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td>--pm-frame-rule</td><td>0 0 0 1.5px #111</td><td>All art frames, crate keyline</td></tr>
+        <tr><td>--pm-shadow-card</td><td>0 1px 3px rgba(0,0,0,.05)</td><td>Upload card, intake panel</td></tr>
+        <tr><td>--pm-shadow-frame</td><td>0 8px 24px rgba(0,0,0,.08)</td><td>Gallery art frames</td></tr>
+        <tr><td>--pm-shadow-hud</td><td>0 4px 16px rgba(0,0,0,.06)</td><td>Keyboard HUD panel</td></tr>
+        <tr><td>--pm-shadow-zoom</td><td>0 24px 60px rgba(0,0,0,.18)</td><td>Zoom overlay frame</td></tr>
+      </tbody>
+    </table>
+
+    <p class="subsection-title">App-level layout constants</p>
+    <table class="token-table">
+      <thead><tr><th>Constant (App.jsx)</th><th>Value</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td>MAXWELL</td><td>300px</td><td>Longest side of image well in gallery</td></tr>
+        <tr><td>WELL_PAD</td><td>50px</td><td>(22px mat + 3px keyline) × 2 sides</td></tr>
+        <tr><td>FLOOR_H</td><td>304px</td><td>Gallery floor strip height</td></tr>
+        <tr><td>SLOT_W</td><td>420px</td><td>Each gallery horizontal slot width</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── Motion ── -->
+  <section class="doc-section" id="motion">
+    <p class="section-eyebrow">Foundations</p>
+    <h2 class="section-title">Motion</h2>
+    <p class="section-desc">
+      Five named keyframe animations defined in <code style="font-family:monospace;font-size:12px;">app/src/index.css</code>.
+      Each is shown below at its start → end states (static). All states are in the DOM simultaneously.
+    </p>
+
+    <table class="token-table" style="margin-bottom:40px;">
+      <thead><tr><th>Animation</th><th>Duration / Timing</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td>waddle</td><td>0.52s · steps(4,end) · infinite</td><td>Gallery walker character</td></tr>
+        <tr><td>hintPulse</td><td>1.4s · ease-in-out · infinite</td><td>Zoom exit hint (↓ Back to wall)</td></tr>
+        <tr><td>stampPop</td><td>0.5s · ease · both</td><td>"Delivered" stamp entrance</td></tr>
+        <tr><td>truckBob</td><td>0.45s · steps(2) · infinite</td><td>Crate truck idle</td></tr>
+        <tr><td>fadeUp</td><td>0.4s · ease · both</td><td>Delivered phase + zoom overlay entrance</td></tr>
+        <tr><td>track-pan</td><td>0.5s · --pm-ease-glide</td><td>Horizontal gallery panning (CSS transition)</td></tr>
+        <tr><td>crate-drop</td><td>0.55s · --pm-ease-pop</td><td>Photo drops into crate pile</td></tr>
+      </tbody>
+    </table>
+
+    <!-- waddle -->
+    <div style="margin-bottom:32px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pm-ink-400);margin-bottom:12px;">waddle — 4-frame walk cycle (rotate ±2.2° + translateY ±4px)</div>
+      <div style="display:flex;gap:16px;align-items:flex-end;">
+        <div class="state-item">
+          <div class="state-tag">0%</div>
+          <div style="width:28px;height:64px;background:var(--pm-ink-900);transform:translateY(0) rotate(-2.2deg);transform-origin:bottom center;"></div>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">25%</div>
+          <div style="width:28px;height:64px;background:var(--pm-ink-700);transform:translateY(-4px) rotate(0deg);transform-origin:bottom center;"></div>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">50%</div>
+          <div style="width:28px;height:64px;background:var(--pm-ink-900);transform:translateY(0) rotate(2.2deg);transform-origin:bottom center;"></div>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">75%</div>
+          <div style="width:28px;height:64px;background:var(--pm-ink-700);transform:translateY(-4px) rotate(0deg);transform-origin:bottom center;"></div>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">100%</div>
+          <div style="width:28px;height:64px;background:var(--pm-ink-900);transform:translateY(0) rotate(-2.2deg);transform-origin:bottom center;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- stampPop -->
+    <div style="margin-bottom:32px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pm-ink-400);margin-bottom:12px;">stampPop — scale + opacity entrance</div>
+      <div style="display:flex;gap:24px;align-items:flex-end;">
+        <div class="state-item">
+          <div class="state-tag">0% · opacity 0</div>
+          <div style="display:inline-block;background:var(--pm-ink-900);color:var(--pm-white);font-size:11px;font-weight:700;letter-spacing:3px;padding:12px 20px;text-transform:uppercase;transform:scale(1.8);opacity:0;">DELIVERED</div>
+        </div>
+        <div style="font-size:20px;color:var(--pm-ink-300);align-self:center;">→</div>
+        <div class="state-item">
+          <div class="state-tag">60% · opacity 1</div>
+          <div style="display:inline-block;background:var(--pm-ink-900);color:var(--pm-white);font-size:11px;font-weight:700;letter-spacing:3px;padding:12px 20px;text-transform:uppercase;transform:scale(.94);opacity:1;">DELIVERED</div>
+        </div>
+        <div style="font-size:20px;color:var(--pm-ink-300);align-self:center;">→</div>
+        <div class="state-item">
+          <div class="state-tag">100% · resting</div>
+          <div style="display:inline-block;background:var(--pm-ink-900);color:var(--pm-white);font-size:11px;font-weight:700;letter-spacing:3px;padding:12px 20px;text-transform:uppercase;transform:scale(1);opacity:1;">DELIVERED</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- fadeUp -->
+    <div style="margin-bottom:32px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pm-ink-400);margin-bottom:12px;">fadeUp — opacity 0→1 + translateY 14px→0</div>
+      <div style="display:flex;gap:24px;align-items:flex-end;">
+        <div class="state-item">
+          <div class="state-tag">0% · hidden below</div>
+          <div style="height:40px;display:flex;align-items:center;font-size:15px;color:var(--pm-text-body);opacity:0;transform:translateY(14px);">Delivered content</div>
+        </div>
+        <div style="font-size:20px;color:var(--pm-ink-300);align-self:center;">→</div>
+        <div class="state-item">
+          <div class="state-tag">100% · resting</div>
+          <div style="height:40px;display:flex;align-items:center;font-size:15px;color:var(--pm-text-body);opacity:1;transform:translateY(0);">Delivered content</div>
+        </div>
+      </div>
+    </div>
+
+    <table class="token-table">
+      <thead><tr><th>Easing token</th><th>Bézier</th><th>Character</th></tr></thead>
+      <tbody>
+        <tr><td>--pm-ease-glide</td><td>cubic-bezier(.22,.61,.36,1)</td><td>Smooth deceleration — gallery track pan</td></tr>
+        <tr><td>--pm-ease-pop</td><td>cubic-bezier(.5,–.3,.6,1)</td><td>Springy overshoot — crate drop launch</td></tr>
+        <tr><td>--pm-dur-fast</td><td>0.15s</td><td>Micro interactions (button hover)</td></tr>
+        <tr><td>--pm-dur-mid</td><td>0.45s</td><td>Truck bob, scale transitions</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+
+  <!-- ══════════ ATOMS ══════════ -->
+
+  <!-- ── Button ── -->
+  <section class="doc-section" id="button">
+    <p class="section-eyebrow">Atoms</p>
+    <h2 class="section-title">Button</h2>
+    <p class="section-desc">
+      Two variants × three sizes. All uppercase, 2px letter-spacing. No border-radius.
+      Source: <code style="font-family:monospace;font-size:12px;">project/components/core/Button.jsx</code>
+    </p>
+
+    <p class="subsection-title">Primary — all states</p>
+    <div class="canvas">
+      <div class="state-strip">
+        <div class="state-item">
+          <div class="state-tag">Default</div>
+          <button class="pm-btn">Ship it <span class="pm-btn-arrow"></span></button>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">Hover</div>
+          <button class="pm-btn is-hover">Ship it <span class="pm-btn-arrow"></span></button>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">Active / pressed</div>
+          <button class="pm-btn is-active">Ship it <span class="pm-btn-arrow"></span></button>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">Disabled</div>
+          <button class="pm-btn is-disabled">Ship it <span class="pm-btn-arrow"></span></button>
+        </div>
+      </div>
+    </div>
+
+    <p class="subsection-title">Ghost — all states</p>
+    <div class="canvas canvas-sub">
+      <div class="state-strip">
+        <div class="state-item">
+          <div class="state-tag">Default</div>
+          <button class="pm-btn ghost">Enter the gallery <span class="pm-btn-arrow"></span></button>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">Hover</div>
+          <button class="pm-btn ghost is-hover">Enter the gallery <span class="pm-btn-arrow"></span></button>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">Active</div>
+          <button class="pm-btn ghost is-active">Enter the gallery <span class="pm-btn-arrow"></span></button>
+        </div>
+      </div>
+    </div>
+
+    <p class="subsection-title">Sizes</p>
+    <div class="canvas">
+      <div class="state-strip" style="align-items:flex-end;">
+        <div class="state-item">
+          <div class="state-tag">sm · 11px / 11px 18px</div>
+          <button class="pm-btn sm">Confirm</button>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">md · 12px / 15px 26px (default)</div>
+          <button class="pm-btn">Ship it</button>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">lg · 12px / 16px 28px</div>
+          <button class="pm-btn lg">Enter the gallery <span class="pm-btn-arrow"></span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Keycap ── -->
+  <section class="doc-section" id="keycap">
+    <p class="section-eyebrow">Atoms</p>
+    <h2 class="section-title">Keycap</h2>
+    <p class="section-desc">
+      32px square chip with a directional triangle inside. Used in the HUD and zoom hint.
+      Source: <code style="font-family:monospace;font-size:12px;">project/components/core/Keycap.jsx</code>
+    </p>
+
+    <div class="canvas">
+      <div class="state-strip">
+        <div class="state-item">
+          <div class="state-tag">Left</div>
+          <div class="pm-keycap"><div class="tri-left"></div></div>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">Right</div>
+          <div class="pm-keycap"><div class="tri-right"></div></div>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">Up</div>
+          <div class="pm-keycap"><div class="tri-up"></div></div>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">Down</div>
+          <div class="pm-keycap"><div class="tri-down"></div></div>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">Down-sm (zoom hint)</div>
+          <div class="pm-keycap"><div class="tri-down-sm"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Icons ── -->
+  <section class="doc-section" id="icons">
+    <p class="section-eyebrow">Atoms</p>
+    <h2 class="section-title">Icons — CSS triangles</h2>
+    <p class="section-desc">
+      All directional arrows are CSS border-trick triangles. No SVG, no icon font.
+      Defined inline in <code style="font-family:monospace;font-size:12px;">App.jsx</code> as small functional components.
+    </p>
+
+    <div class="canvas">
+      <div class="state-strip">
+        <div class="state-item">
+          <div class="state-tag">ArrowLeft</div>
+          <div class="tri-left"></div>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">ArrowRight</div>
+          <div class="tri-right"></div>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">ArrowUp</div>
+          <div class="tri-up"></div>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">ArrowDown</div>
+          <div class="tri-down"></div>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">ArrowDownSm</div>
+          <div class="tri-down-sm"></div>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">Plus / add</div>
+          <div style="width:20px;height:20px;position:relative;">
+            <div style="position:absolute;left:9px;top:2px;width:2px;height:16px;background:var(--pm-ink-900);"></div>
+            <div style="position:absolute;left:2px;top:9px;width:16px;height:2px;background:var(--pm-ink-900);"></div>
+          </div>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">Remove ×</div>
+          <div style="width:22px;height:22px;border-radius:50%;background:var(--pm-ink-900);color:var(--pm-white);font-size:13px;display:flex;align-items:center;justify-content:center;">&times;</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Plaque ── -->
+  <section class="doc-section" id="plaque">
+    <p class="section-eyebrow">Atoms</p>
+    <h2 class="section-title">Plaque</h2>
+    <p class="section-desc">
+      Museum wall label beneath each framed work. Uppercase title + sentence-case caption.
+      Source: <code style="font-family:monospace;font-size:12px;">project/components/core/Plaque.jsx</code>
+    </p>
+
+    <div class="canvas">
+      <div class="state-strip">
+        <div class="state-item">
+          <div class="state-tag">Default (center-aligned)</div>
+          <div class="pm-plaque">
+            <div class="pm-plaque-title">Photo 01</div>
+            <div class="pm-plaque-sub">archival pixel print</div>
+          </div>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">Left-aligned</div>
+          <div class="pm-plaque" style="align-items:flex-start;">
+            <div class="pm-plaque-title">Photo 02</div>
+            <div class="pm-plaque-sub">archival pixel print</div>
+          </div>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">Title only</div>
+          <div class="pm-plaque">
+            <div class="pm-plaque-title">Photo 03</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════ MOLECULES ══════════ -->
+
+  <!-- ── Art Frame ── -->
+  <section class="doc-section" id="art-frame">
+    <p class="section-eyebrow">Molecules</p>
+    <h2 class="section-title">Art Frame</h2>
+    <p class="section-desc">
+      Signature element: 1.5px black keyline → 22px white mat → 1px inner keyline → image well.
+      Dimensions are aspect-ratio-aware with MAXWELL=300 as the longest edge.
+      Source: <code style="font-family:monospace;font-size:12px;">project/components/core/ArtFrame.jsx</code>
+    </p>
+
+    <div class="canvas">
+      <div class="state-strip" style="align-items:flex-start;gap:48px;">
+        <!-- Landscape -->
+        <div class="state-item">
+          <div class="state-tag">Landscape · ar 1.78 (16:9)</div>
+          <div class="pm-frame" style="display:inline-block;">
+            <div class="pm-frame-mat" style="padding:22px;">
+              <div class="pm-frame-well" style="width:200px;height:112px;">
+                <div class="photo-mock"></div>
+              </div>
+            </div>
+          </div>
+          <div class="pm-plaque"><div class="pm-plaque-title">Photo 01</div><div class="pm-plaque-sub">archival pixel print</div></div>
+        </div>
+        <!-- Square -->
+        <div class="state-item">
+          <div class="state-tag">Square · ar 1.0</div>
+          <div class="pm-frame" style="display:inline-block;">
+            <div class="pm-frame-mat" style="padding:22px;">
+              <div class="pm-frame-well" style="width:160px;height:160px;">
+                <div class="photo-mock"></div>
+              </div>
+            </div>
+          </div>
+          <div class="pm-plaque"><div class="pm-plaque-title">Photo 02</div><div class="pm-plaque-sub">archival pixel print</div></div>
+        </div>
+        <!-- Portrait -->
+        <div class="state-item">
+          <div class="state-tag">Portrait · ar 0.75 (3:4)</div>
+          <div class="pm-frame" style="display:inline-block;">
+            <div class="pm-frame-mat" style="padding:22px;">
+              <div class="pm-frame-well" style="width:120px;height:160px;">
+                <div class="photo-mock"></div>
+              </div>
+            </div>
+          </div>
+          <div class="pm-plaque"><div class="pm-plaque-title">Photo 03</div><div class="pm-plaque-sub">archival pixel print</div></div>
+        </div>
+        <!-- Empty -->
+        <div class="state-item">
+          <div class="state-tag">Empty (no image uploaded)</div>
+          <div class="pm-frame" style="display:inline-block;">
+            <div class="pm-frame-mat" style="padding:22px;">
+              <div class="pm-frame-well" style="width:160px;height:160px;">
+                <div class="pm-frame-well-text"><div>Empty</div><div style="font-weight:400;color:var(--pm-ink-300);margin-top:3px;font-size:10px;letter-spacing:.5px;">curate a photo</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="pm-plaque"><div class="pm-plaque-title">Photo 04</div><div class="pm-plaque-sub">archival pixel print</div></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="subsection-title">Focus states (gallery context)</p>
+    <div class="canvas canvas-floor" style="display:flex;align-items:center;justify-content:center;gap:60px;padding:60px 40px;">
+      <div class="pm-frame-wrap is-unfocused" style="position:relative;">
+        <div class="pm-spotlight"></div>
+        <div class="pm-frame">
+          <div class="pm-frame-mat" style="padding:22px;"><div class="pm-frame-well" style="width:120px;height:80px;"><div class="photo-mock"></div></div></div>
+        </div>
+        <div class="pm-plaque"><div class="pm-plaque-title">Photo 01</div><div class="pm-plaque-sub">archival pixel print</div></div>
+        <div style="text-align:center;margin-top:8px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pm-ink-400);">Unfocused · scale(.84) · opacity .55</div>
+      </div>
+      <div class="pm-frame-wrap is-focused" style="position:relative;">
+        <div class="pm-spotlight"></div>
+        <div class="pm-frame">
+          <div class="pm-frame-mat" style="padding:22px;"><div class="pm-frame-well" style="width:120px;height:80px;"><div class="photo-mock"></div></div></div>
+        </div>
+        <div class="pm-plaque"><div class="pm-plaque-title">Photo 02</div><div class="pm-plaque-sub">archival pixel print</div></div>
+        <div style="text-align:center;margin-top:8px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pm-ink-400);">Focused · scale(1.06) · opacity 1</div>
+      </div>
+      <div class="pm-frame-wrap is-unfocused" style="position:relative;">
+        <div class="pm-spotlight"></div>
+        <div class="pm-frame">
+          <div class="pm-frame-mat" style="padding:22px;"><div class="pm-frame-well" style="width:120px;height:80px;"><div class="photo-mock"></div></div></div>
+        </div>
+        <div class="pm-plaque"><div class="pm-plaque-title">Photo 03</div><div class="pm-plaque-sub">archival pixel print</div></div>
+        <div style="text-align:center;margin-top:8px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--pm-ink-400);">Unfocused · scale(.84) · opacity .55</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Section Toggle ── -->
+  <section class="doc-section" id="section-toggle">
+    <p class="section-eyebrow">Molecules</p>
+    <h2 class="section-title">Section Toggle</h2>
+    <p class="section-desc">
+      Segmented control for CURATE / GALLERY view switching. Lives inside the top bar.
+      Source: <code style="font-family:monospace;font-size:12px;">project/components/core/SectionToggle.jsx</code>
+    </p>
+
+    <div class="canvas">
+      <div class="state-strip">
+        <div class="state-item">
+          <div class="state-tag">Curate active</div>
+          <div class="pm-toggle">
+            <button class="pm-toggle-btn is-active">Curate</button>
+            <button class="pm-toggle-btn">Gallery</button>
+          </div>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">Gallery active</div>
+          <div class="pm-toggle">
+            <button class="pm-toggle-btn">Curate</button>
+            <button class="pm-toggle-btn is-active">Gallery</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Dropzone ── -->
+  <section class="doc-section" id="dropzone">
+    <p class="section-eyebrow">Molecules</p>
+    <h2 class="section-title">Dropzone</h2>
+    <p class="section-desc">
+      File upload target inside the curate panel. Supports click and drag-and-drop.
+      Defined inline in <code style="font-family:monospace;font-size:12px;">App.jsx</code>.
+    </p>
+
+    <div class="canvas">
+      <div class="state-strip">
+        <div class="state-item" style="flex:1;min-width:260px;">
+          <div class="state-tag">Default (empty)</div>
+          <div class="pm-dropzone">
+            <div class="pm-dropzone-icon"></div>
+            <div class="pm-dropzone-label">Drop or click to add</div>
+            <div class="pm-dropzone-hint">JPG · PNG · up to 10 photos</div>
+          </div>
+        </div>
+        <div class="state-item" style="flex:1;min-width:260px;">
+          <div class="state-tag">Drag-over (hover)</div>
+          <div class="pm-dropzone is-hover">
+            <div class="pm-dropzone-icon"></div>
+            <div class="pm-dropzone-label">Drop or click to add</div>
+            <div class="pm-dropzone-hint">JPG · PNG · up to 10 photos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Thumbnail ── -->
+  <section class="doc-section" id="thumbnail">
+    <p class="section-eyebrow">Molecules</p>
+    <h2 class="section-title">Thumbnail</h2>
+    <p class="section-desc">
+      72px square photo chip with 1.5px black keyline, 6px white mat, and a removable ×
+      button. Renders a pixelated preview of the uploaded image.
+      Defined inline in <code style="font-family:monospace;font-size:12px;">App.jsx</code>.
+    </p>
+
+    <div class="canvas">
+      <div class="state-strip" style="align-items:flex-start;">
+        <div class="state-item">
+          <div class="state-tag">With image</div>
+          <div style="position:relative;display:inline-block;">
+            <div class="pm-thumb-card">
+              <div class="pm-thumb-img" style="image-rendering:pixelated;"></div>
+            </div>
+            <div class="pm-thumb-remove">&times;</div>
+          </div>
+        </div>
+        <div class="state-item">
+          <div class="state-tag">Grid — 5-up layout</div>
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:18px;">
+            <div style="position:relative;display:inline-block;"><div class="pm-thumb-card"><div class="pm-thumb-img" style="background:linear-gradient(135deg,#8b6f5c,#c4956a);"></div></div><div class="pm-thumb-remove">&times;</div></div>
+            <div style="position:relative;display:inline-block;"><div class="pm-thumb-card"><div class="pm-thumb-img" style="background:linear-gradient(135deg,#a0c4d8,#4a7898);"></div></div><div class="pm-thumb-remove">&times;</div></div>
+            <div style="position:relative;display:inline-block;"><div class="pm-thumb-card"><div class="pm-thumb-img" style="background:linear-gradient(135deg,#c49050,#8b6030);"></div></div><div class="pm-thumb-remove">&times;</div></div>
+            <div style="position:relative;display:inline-block;"><div class="pm-thumb-card"><div class="pm-thumb-img" style="background:linear-gradient(135deg,#7a9870,#4a7040);"></div></div><div class="pm-thumb-remove">&times;</div></div>
+            <div style="position:relative;display:inline-block;"><div class="pm-thumb-card"><div class="pm-thumb-img" style="background:linear-gradient(135deg,#c0a0c4,#8060a0);"></div></div><div class="pm-thumb-remove">&times;</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Progress Bar ── -->
+  <section class="doc-section" id="progress">
+    <p class="section-eyebrow">Molecules</p>
+    <h2 class="section-title">Progress Bar</h2>
+    <p class="section-desc">
+      6px hairline bar. Fills left→right as photos are loaded into the crate during shipping.
+      Defined inline in <code style="font-family:monospace;font-size:12px;">App.jsx</code>.
+    </p>
+
+    <div class="canvas canvas-sub">
+      <div style="display:flex;flex-direction:column;gap:20px;max-width:420px;">
+        <div class="state-item" style="width:100%;">
+          <div class="state-tag">0% — loading started</div>
+          <div class="pm-progress-track" style="width:100%;"><div class="pm-progress-fill" style="width:0%;"></div></div>
+        </div>
+        <div class="state-item" style="width:100%;">
+          <div class="state-tag">40% — in progress</div>
+          <div class="pm-progress-track" style="width:100%;"><div class="pm-progress-fill" style="width:40%;"></div></div>
+        </div>
+        <div class="state-item" style="width:100%;">
+          <div class="state-tag">70% — almost done</div>
+          <div class="pm-progress-track" style="width:100%;"><div class="pm-progress-fill" style="width:70%;"></div></div>
+        </div>
+        <div class="state-item" style="width:100%;">
+          <div class="state-tag">100% — complete</div>
+          <div class="pm-progress-track" style="width:100%;"><div class="pm-progress-fill" style="width:100%;"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HUD ── -->
+  <section class="doc-section" id="hud">
+    <p class="section-eyebrow">Molecules</p>
+    <h2 class="section-title">HUD — Keyboard Legend</h2>
+    <p class="section-desc">
+      Floats at bottom-center of the gallery. Shows keyboard controls. Hidden during zoom.
+      Defined inline in <code style="font-family:monospace;font-size:12px;">App.jsx</code>.
+    </p>
+
+    <p class="subsection-title">Default (not zoomed)</p>
+    <div class="canvas canvas-floor" style="display:flex;justify-content:center;align-items:flex-end;padding-bottom:32px;">
+      <div class="pm-hud">
+        <div class="pm-hud-item">
+          <div class="pm-hud-keys">
+            <div class="pm-keycap"><div class="tri-left"></div></div>
+            <div class="pm-keycap"><div class="tri-right"></div></div>
+          </div>
+          <div class="pm-hud-label">Walk</div>
+        </div>
+        <div class="pm-hud-item">
+          <div class="pm-keycap"><div class="tri-up"></div></div>
+          <div class="pm-hud-label">Zoom</div>
+        </div>
+        <div class="pm-hud-item">
+          <div class="pm-keycap"><div class="tri-down"></div></div>
+          <div class="pm-hud-label">Back</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="subsection-title">Zoom-mode hint (replaces HUD)</p>
+    <div class="canvas" style="display:flex;justify-content:center;align-items:center;">
+      <div style="display:flex;align-items:center;gap:10px;color:var(--pm-ink-400);font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;">
+        <div class="pm-keycap"><div class="tri-down-sm"></div></div>
+        Back to wall
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════ ORGANISMS ══════════ -->
+
+  <!-- ── Top Bar ── -->
+  <section class="doc-section" id="top-bar">
+    <p class="section-eyebrow">Organisms</p>
+    <h2 class="section-title">Top Bar</h2>
+    <p class="section-desc">
+      64px fixed bar. Wordmark left, Section Toggle right. z-index 60.
+      Defined inline in <code style="font-family:monospace;font-size:12px;">App.jsx</code>.
+    </p>
+
+    <div style="margin-bottom:16px;">
+      <div class="state-tag" style="margin-bottom:8px;">Curate view active</div>
+      <div class="pm-topbar">
+        <div class="pm-wordmark">PIXEL&nbsp;PIX</div>
+        <div class="pm-toggle">
+          <button class="pm-toggle-btn is-active">Curate</button>
+          <button class="pm-toggle-btn">Gallery</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="state-tag" style="margin-bottom:8px;">Gallery view active</div>
+      <div class="pm-topbar">
+        <div class="pm-wordmark">PIXEL&nbsp;PIX</div>
+        <div class="pm-toggle">
+          <button class="pm-toggle-btn">Curate</button>
+          <button class="pm-toggle-btn is-active">Gallery</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Curate Select ── -->
+  <section class="doc-section" id="curate-select">
+    <p class="section-eyebrow">Organisms</p>
+    <h2 class="section-title">Curate Panel — Select phase</h2>
+    <p class="section-desc">
+      Initial state when arriving at the Curate view. Shows dropzone + empty counter + disabled Ship button.
+      Transitions to "with photos" state once images are added.
+    </p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <!-- Empty -->
+      <div>
+        <div class="state-tag" style="margin-bottom:12px;">Empty — no photos yet</div>
+        <div style="background:var(--pm-wall-white);padding:32px;max-width:480px;">
+          <div style="font-size:13px;letter-spacing:4px;color:var(--pm-ink-400);text-transform:uppercase;text-align:center;">Exhibition intake</div>
+          <div style="font-size:36px;font-weight:700;letter-spacing:-1px;color:var(--pm-ink-900);margin-top:8px;text-align:center;">Curate</div>
+          <div style="font-size:14px;margin-top:10px;color:var(--pm-ink-500);line-height:1.5;text-align:center;">Add up to ten photographs. We'll crate them and ship them to your gallery wall.</div>
+          <div style="margin-top:28px;background:var(--pm-white);padding:22px;border:1px solid var(--pm-ink-200);box-shadow:var(--pm-shadow-card);">
+            <div class="pm-dropzone" style="padding:28px;">
+              <div class="pm-dropzone-icon"></div>
+              <div class="pm-dropzone-label">Drop or click to add</div>
+              <div class="pm-dropzone-hint">JPG · PNG · up to 10 photos</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-top:18px;border-top:1px solid var(--pm-ink-150);">
+              <div style="font-size:13px;letter-spacing:2px;color:var(--pm-ink-400);text-transform:uppercase;">0 / 10</div>
+              <div class="pm-btn is-disabled">Ship it <span class="pm-btn-arrow"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- With photos -->
+      <div>
+        <div class="state-tag" style="margin-bottom:12px;">With 5 photos — Ship enabled</div>
+        <div style="background:var(--pm-wall-white);padding:32px;max-width:480px;">
+          <div style="font-size:13px;letter-spacing:4px;color:var(--pm-ink-400);text-transform:uppercase;text-align:center;">Exhibition intake</div>
+          <div style="font-size:36px;font-weight:700;letter-spacing:-1px;color:var(--pm-ink-900);margin-top:8px;text-align:center;">Curate</div>
+          <div style="font-size:14px;margin-top:10px;color:var(--pm-ink-500);line-height:1.5;text-align:center;">Add up to ten photographs. We'll crate them and ship them to your gallery wall.</div>
+          <div style="margin-top:28px;background:var(--pm-white);padding:22px;border:1px solid var(--pm-ink-200);box-shadow:var(--pm-shadow-card);">
+            <div class="pm-dropzone" style="padding:20px;">
+              <div class="pm-dropzone-icon"></div>
+              <div class="pm-dropzone-label">Drop or click to add</div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:18px;">
+              <div style="position:relative;"><div class="pm-thumb-card"><div class="pm-thumb-img" style="width:100%;height:60px;background:linear-gradient(135deg,#8b6f5c,#c4956a);"></div></div><div class="pm-thumb-remove">&times;</div></div>
+              <div style="position:relative;"><div class="pm-thumb-card"><div class="pm-thumb-img" style="width:100%;height:60px;background:linear-gradient(135deg,#a0c4d8,#4a7898);"></div></div><div class="pm-thumb-remove">&times;</div></div>
+              <div style="position:relative;"><div class="pm-thumb-card"><div class="pm-thumb-img" style="width:100%;height:60px;background:linear-gradient(135deg,#c49050,#8b6030);"></div></div><div class="pm-thumb-remove">&times;</div></div>
+              <div style="position:relative;"><div class="pm-thumb-card"><div class="pm-thumb-img" style="width:100%;height:60px;background:linear-gradient(135deg,#7a9870,#4a7040);"></div></div><div class="pm-thumb-remove">&times;</div></div>
+              <div style="position:relative;"><div class="pm-thumb-card"><div class="pm-thumb-img" style="width:100%;height:60px;background:linear-gradient(135deg,#c0a0c4,#8060a0);"></div></div><div class="pm-thumb-remove">&times;</div></div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:20px;padding-top:18px;border-top:1px solid var(--pm-ink-150);">
+              <div style="font-size:13px;letter-spacing:2px;color:var(--pm-ink-400);text-transform:uppercase;">5 / 10</div>
+              <button class="pm-btn">Ship it <span class="pm-btn-arrow"></span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Curate Shipping ── -->
+  <section class="doc-section" id="curate-shipping">
+    <p class="section-eyebrow">Organisms</p>
+    <h2 class="section-title">Curate Panel — Shipping phase</h2>
+    <p class="section-desc">
+      Active after "Ship it" is clicked. Photos animate into the crate, progress bar fills,
+      truck exits. All three sub-states shown flat.
+    </p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+      <!-- Loading -->
+      <div>
+        <div class="state-tag" style="margin-bottom:10px;">2 of 5 shipped</div>
+        <div style="background:var(--pm-wall-white);padding:24px;text-align:center;">
+          <div style="font-size:11px;letter-spacing:4px;color:var(--pm-ink-400);text-transform:uppercase;">In transit</div>
+          <div style="font-size:24px;font-weight:700;letter-spacing:-0.5px;color:var(--pm-ink-900);margin-top:8px;">Shipping to the gallery</div>
+          <div style="font-size:13px;margin-top:6px;color:var(--pm-ink-500);">Crating your works…</div>
+          <!-- photos -->
+          <div style="position:relative;margin-top:20px;height:140px;">
+            <div style="position:absolute;top:0;left:0;right:0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;">
+              <div style="width:44px;transition:transform .55s;transform:translateY(90px) scale(0.26);opacity:0;"><div class="pm-thumb-card"><div class="pm-thumb-img" style="width:100%;height:38px;background:linear-gradient(135deg,#8b6f5c,#c4956a);"></div></div></div>
+              <div style="width:44px;transform:translateY(90px) scale(0.26);opacity:0;"><div class="pm-thumb-card"><div class="pm-thumb-img" style="width:100%;height:38px;background:linear-gradient(135deg,#a0c4d8,#4a7898);"></div></div></div>
+              <div style="width:44px;transform:translateY(-4px) scale(1.06);"><div class="pm-thumb-card"><div class="pm-thumb-img" style="width:100%;height:38px;background:linear-gradient(135deg,#c49050,#8b6030);"></div></div></div>
+              <div style="width:44px;"><div class="pm-thumb-card"><div class="pm-thumb-img" style="width:100%;height:38px;background:linear-gradient(135deg,#7a9870,#4a7040);"></div></div></div>
+              <div style="width:44px;"><div class="pm-thumb-card"><div class="pm-thumb-img" style="width:100%;height:38px;background:linear-gradient(135deg,#c0a0c4,#8060a0);"></div></div></div>
+            </div>
+            <!-- truck proxy -->
+            <div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);">
+              <div style="background:linear-gradient(135deg,#d4a96a,#b8803c);width:120px;height:60px;border:2px solid #5a3a10;display:flex;align-items:center;justify-content:center;">
+                <div style="font-size:8px;font-weight:700;letter-spacing:1px;color:rgba(0,0,0,.35);">CRATE BOXES</div>
+              </div>
+            </div>
+          </div>
+          <div class="pm-progress-track" style="margin:8px auto 0;width:240px;"><div class="pm-progress-fill" style="width:40%;"></div></div>
+        </div>
+      </div>
+
+      <!-- Truck leaving -->
+      <div>
+        <div class="state-tag" style="margin-bottom:10px;">All shipped — truck exiting</div>
+        <div style="background:var(--pm-wall-white);padding:24px;text-align:center;">
+          <div style="font-size:11px;letter-spacing:4px;color:var(--pm-ink-400);text-transform:uppercase;">In transit</div>
+          <div style="font-size:24px;font-weight:700;letter-spacing:-0.5px;color:var(--pm-ink-900);margin-top:8px;">Shipping to the gallery</div>
+          <div style="font-size:13px;margin-top:6px;color:var(--pm-ink-500);">Crating your works…</div>
+          <div style="position:relative;margin-top:20px;height:140px;">
+            <div style="position:absolute;top:0;left:0;right:0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;">
+              <div style="width:44px;transform:translateY(90px) scale(0.26);opacity:0;"><div class="pm-thumb-card"><div class="pm-thumb-img" style="width:100%;height:38px;background:linear-gradient(135deg,#8b6f5c,#c4956a);"></div></div></div>
+              <div style="width:44px;transform:translateY(90px) scale(0.26);opacity:0;"><div class="pm-thumb-card"><div class="pm-thumb-img" style="width:100%;height:38px;background:linear-gradient(135deg,#a0c4d8,#4a7898);"></div></div></div>
+              <div style="width:44px;transform:translateY(90px) scale(0.26);opacity:0;"><div class="pm-thumb-card"><div class="pm-thumb-img" style="width:100%;height:38px;background:linear-gradient(135deg,#c49050,#8b6030);"></div></div></div>
+              <div style="width:44px;transform:translateY(90px) scale(0.26);opacity:0;"><div class="pm-thumb-card"><div class="pm-thumb-img" style="width:100%;height:38px;background:linear-gradient(135deg,#7a9870,#4a7040);"></div></div></div>
+              <div style="width:44px;transform:translateY(90px) scale(0.26);opacity:0;"><div class="pm-thumb-card"><div class="pm-thumb-img" style="width:100%;height:38px;background:linear-gradient(135deg,#c0a0c4,#8060a0);"></div></div></div>
+            </div>
+            <div style="position:absolute;bottom:0;left:50%;transform:translateX(calc(-50% + 60px));">
+              <div style="background:linear-gradient(135deg,#d4a96a,#b8803c);width:120px;height:60px;border:2px solid #5a3a10;display:flex;align-items:center;justify-content:center;opacity:.6;">
+                <div style="font-size:8px;font-weight:700;letter-spacing:1px;color:rgba(0,0,0,.35);">CRATE BOXES</div>
+              </div>
+            </div>
+          </div>
+          <div class="pm-progress-track" style="margin:8px auto 0;width:240px;"><div class="pm-progress-fill" style="width:100%;"></div></div>
+        </div>
+      </div>
+
+      <!-- Truck gone -->
+      <div>
+        <div class="state-tag" style="margin-bottom:10px;">Truck gone — transitioning</div>
+        <div style="background:var(--pm-wall-white);padding:24px;text-align:center;">
+          <div style="font-size:11px;letter-spacing:4px;color:var(--pm-ink-400);text-transform:uppercase;">In transit</div>
+          <div style="font-size:24px;font-weight:700;letter-spacing:-0.5px;color:var(--pm-ink-900);margin-top:8px;">Shipping to the gallery</div>
+          <div style="font-size:13px;margin-top:6px;color:var(--pm-ink-500);">Crating your works…</div>
+          <div style="position:relative;margin-top:20px;height:140px;"></div>
+          <div class="pm-progress-track" style="margin:8px auto 0;width:240px;"><div class="pm-progress-fill" style="width:100%;"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Curate Delivered ── -->
+  <section class="doc-section" id="curate-delivered">
+    <p class="section-eyebrow">Organisms</p>
+    <h2 class="section-title">Curate Panel — Delivered phase</h2>
+    <p class="section-desc">
+      Final state after shipping completes. Stamp pops in, then body copy and CTA fade up.
+      Source: <code style="font-family:monospace;font-size:12px;">App.jsx — phase === 'delivered'</code>
+    </p>
+
+    <div class="canvas" style="text-align:center;padding:60px 40px;">
+      <div style="display:inline-block;background:var(--pm-ink-900);color:var(--pm-white);font-size:14px;font-weight:700;letter-spacing:3px;padding:16px 28px;text-transform:uppercase;">
+        Delivered
+      </div>
+      <div style="font-size:17px;margin-top:28px;color:var(--pm-ink-500);line-height:1.5;max-width:380px;margin-left:auto;margin-right:auto;">
+        Your photographs are framed and hung. Take a stroll through the gallery.
+      </div>
+      <div style="margin-top:24px;">
+        <button class="pm-btn lg">Enter the gallery <span class="pm-btn-arrow"></span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Gallery Title Slot ── -->
+  <section class="doc-section" id="gallery-title">
+    <p class="section-eyebrow">Organisms</p>
+    <h2 class="section-title">Gallery — Title slot</h2>
+    <p class="section-desc">
+      Slot index 0 (leftmost). Shows exhibition title, thin rule, navigation hint.
+      Walker is positioned at bottom-center in this slot.
+    </p>
+
+    <div class="canvas canvas-floor" style="height:420px;position:relative;overflow:hidden;">
+      <!-- floor -->
+      <div style="position:absolute;bottom:0;left:0;right:0;height:120px;background:var(--pm-floor);box-shadow:inset 0 1px 0 var(--pm-floor-edge);"></div>
+      <div style="position:absolute;bottom:120px;left:0;right:0;height:1px;background:var(--pm-ink-300);"></div>
+      <!-- content -->
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:50px;">
+        <div style="font-size:11px;letter-spacing:5px;color:var(--pm-ink-400);text-transform:uppercase;">Exhibition</div>
+        <div style="font-size:60px;font-weight:700;letter-spacing:-3px;color:var(--pm-ink-900);line-height:.95;margin-top:12px;white-space:nowrap;">Pixel Pix</div>
+        <div style="width:44px;height:2px;background:var(--pm-ink-900);margin-top:20px;"></div>
+        <div style="font-size:13px;color:var(--pm-ink-400);margin-top:16px;letter-spacing:.5px;">use ← → to walk the room</div>
+      </div>
+      <!-- walker -->
+      <div style="position:absolute;bottom:118px;left:50%;transform:translateX(-50%);">
+        <div style="position:relative;">
+          <div style="width:24px;height:60px;background:var(--pm-ink-900);position:relative;">
+            <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:16px;height:10px;background:var(--pm-ink-700);border-radius:2px 2px 0 0;"></div>
+          </div>
+          <div style="position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:16px;height:6px;border-radius:50%;background:rgba(0,0,0,.14);"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Gallery Photo Slot ── -->
+  <section class="doc-section" id="gallery-slot">
+    <p class="section-eyebrow">Organisms</p>
+    <h2 class="section-title">Gallery — Photo slot</h2>
+    <p class="section-desc">
+      Each slot is 420px wide. Focused slot scales to 1.06×, unfocused to 0.84× / 0.55 opacity.
+      Spotlight cone floats above each frame. Walker tracks to active slot.
+    </p>
+
+    <div class="canvas" style="height:480px;position:relative;overflow:hidden;background:var(--pm-wall-white);">
+      <div style="position:absolute;bottom:0;left:0;right:0;height:120px;background:var(--pm-floor);box-shadow:inset 0 1px 0 var(--pm-floor-edge);"></div>
+      <div style="position:absolute;bottom:120px;left:0;right:0;height:1px;background:var(--pm-ink-300);"></div>
+
+      <!-- Three slots side by side -->
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:0;padding-bottom:40px;">
+        <!-- unfocused left -->
+        <div style="flex:none;width:280px;display:flex;align-items:center;justify-content:center;">
+          <div class="pm-frame-wrap is-unfocused" style="position:relative;">
+            <div class="pm-spotlight"></div>
+            <div class="pm-frame">
+              <div class="pm-frame-mat" style="padding:16px;"><div class="pm-frame-well" style="width:100px;height:66px;"><div class="photo-mock"></div></div></div>
+            </div>
+            <div class="pm-plaque"><div class="pm-plaque-title">Photo 01</div><div class="pm-plaque-sub">archival pixel print</div></div>
+          </div>
+        </div>
+        <!-- focused center -->
+        <div style="flex:none;width:320px;display:flex;align-items:center;justify-content:center;">
+          <div class="pm-frame-wrap is-focused" style="position:relative;">
+            <div class="pm-spotlight"></div>
+            <div class="pm-frame">
+              <div class="pm-frame-mat" style="padding:16px;"><div class="pm-frame-well" style="width:130px;height:86px;"><div class="photo-mock"></div></div></div>
+            </div>
+            <div class="pm-plaque"><div class="pm-plaque-title">Photo 02</div><div class="pm-plaque-sub">archival pixel print</div></div>
+          </div>
+        </div>
+        <!-- unfocused right -->
+        <div style="flex:none;width:280px;display:flex;align-items:center;justify-content:center;">
+          <div class="pm-frame-wrap is-unfocused" style="position:relative;">
+            <div class="pm-spotlight"></div>
+            <div class="pm-frame">
+              <div class="pm-frame-mat" style="padding:16px;"><div class="pm-frame-well" style="width:100px;height:66px;"><div class="photo-mock"></div></div></div>
+            </div>
+            <div class="pm-plaque"><div class="pm-plaque-title">Photo 03</div><div class="pm-plaque-sub">archival pixel print</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Walker at center -->
+      <div style="position:absolute;bottom:118px;left:50%;transform:translateX(-50%);">
+        <div style="position:relative;">
+          <div style="width:24px;height:60px;background:var(--pm-ink-900);position:relative;">
+            <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:16px;height:10px;background:var(--pm-ink-700);border-radius:2px 2px 0 0;"></div>
+          </div>
+          <div style="position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:16px;height:6px;border-radius:50%;background:rgba(0,0,0,.14);"></div>
+        </div>
+      </div>
+
+      <!-- HUD -->
+      <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);">
+        <div class="pm-hud" style="padding:10px 18px;">
+          <div class="pm-hud-item">
+            <div class="pm-hud-keys">
+              <div class="pm-keycap" style="width:26px;height:26px;"><div class="tri-left"></div></div>
+              <div class="pm-keycap" style="width:26px;height:26px;"><div class="tri-right"></div></div>
+            </div>
+            <div class="pm-hud-label">Walk</div>
+          </div>
+          <div class="pm-hud-item">
+            <div class="pm-keycap" style="width:26px;height:26px;"><div class="tri-up"></div></div>
+            <div class="pm-hud-label">Zoom</div>
+          </div>
+          <div class="pm-hud-item">
+            <div class="pm-keycap" style="width:26px;height:26px;"><div class="tri-down"></div></div>
+            <div class="pm-hud-label">Back</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Zoom Overlay ── -->
+  <section class="doc-section" id="zoom-overlay">
+    <p class="section-eyebrow">Organisms</p>
+    <h2 class="section-title">Zoom Overlay</h2>
+    <p class="section-desc">
+      Full-screen overlay, triggered by ↑ on a focused photo slot.
+      96% white scrim + large framed image + exit hint. Click anywhere or ↓ to dismiss.
+    </p>
+
+    <div class="canvas" style="height:480px;overflow:hidden;position:relative;background:rgba(255,255,255,.96);">
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;">
+        <!-- Large frame -->
+        <div class="pm-frame" style="box-shadow:var(--pm-frame-rule),var(--pm-shadow-zoom);">
+          <div class="pm-frame-mat" style="padding:26px;">
+            <div class="pm-frame-well" style="width:280px;height:186px;">
+              <div class="photo-mock"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Caption + exit hint -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:14px;">
+          <div style="font-size:12px;font-weight:700;letter-spacing:3px;color:var(--pm-ink-900);text-transform:uppercase;">Photo 02</div>
+          <div style="display:flex;align-items:center;gap:10px;color:var(--pm-ink-400);font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;">
+            <div class="pm-keycap"><div class="tri-down-sm"></div></div>
+            Back to wall
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+// Sidebar active-link tracking (scroll spy)
+const sections = document.querySelectorAll('.doc-section[id]');
+const links = document.querySelectorAll('.sidebar a[href^="#"]');
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const a = document.querySelector('.sidebar a[href="#' + e.target.id + '"]');
+      if (a) a.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+
+sections.forEach(s => io.observe(s));
+</script>
+</body>
+</html>
